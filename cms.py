@@ -2,42 +2,62 @@
 # The COPYRIGHT file at the top level of this repository contains
 # the full copyright notices and license terms.
 from trytond.model import ModelSQL, ModelView, fields
-from trytond.pool import Pool
+from trytond.pool import Pool, PoolMeta
 from trytond.transaction import Transaction
 from trytond.cache import Cache
-from trytond.pyson import Eval, Not, Equal, In
+from trytond.pyson import Equal, Eval, Greater, In, Not
+
 from .tools import slugify
 
-__all__ = ['Menu', 'Article', 'Block', 'Carousel', 'CarouselItem']
+__all__ = ['Menu', 'Article', 'ArticleWebsite', 'Block',
+    'Carousel', 'CarouselItem']
 
 
 class Menu(ModelSQL, ModelView):
     "Menu CMS"
     __name__ = 'galatea.cms.menu'
-    name = fields.Char('Name', translate=True,
-        required=True, on_change=['name', 'code', 'slug'])
+    _rec_name = 'name_used'
+
+    name = fields.Char('Name', translate=True, states={
+            'readonly': Eval('name_uri', False),
+            }, depends=['name_uri'])
+    name_uri = fields.Boolean('Use URI\'s name')
+    name_used = fields.Function(fields.Char('Name', translate=True,
+            required=True),
+        'on_change_with_name')
     code = fields.Char('Code', required=True,
         help='Internal code.')
-    icon = fields.Char('Icon',
-        help='Icon name show in menu.')
-    css = fields.Char('CSS',
-        help='Class CSS in menu.')
-    slug = fields.Char('Slug', translate=True, required=True,
-        help='Cannonical uri.')
-    active = fields.Boolean('Active', select=True)
+    target_type = fields.Selection([
+            ('internal_uri', 'Internal URI'),
+            ('external_url', 'External URL'),
+            ], 'Type', required=True)
+    target_uri = fields.Many2One('galatea.uri', 'Target URI', states={
+            'invisible': Eval('target_type', '') != 'internal_uri',
+            }, depends=['target_uri'])
+    target_url = fields.Char('Target URL', states={
+            'invisible': Eval('target_type', '') != 'ixternal_url',
+            }, depends=['target_type'])
     parent = fields.Many2One("galatea.cms.menu", "Parent", select=True)
     left = fields.Integer('Left', required=True, select=True)
     right = fields.Integer('Right', required=True, select=True)
     childs = fields.One2Many('galatea.cms.menu', 'parent', 'Children')
     sequence = fields.Integer('Sequence')
-    login = fields.Boolean('Login', help='Allow login users')
-    manager = fields.Boolean('Manager', help='Allow manager users')
     nofollow = fields.Boolean('Nofollow',
         help='Add attribute in links to not search engines continue')
+    active = fields.Boolean('Active', select=True)
+    # TODO: add website field? add domain in target_uri parent
+    # TODO: I think next fields should go to another module
+    css = fields.Char('CSS',
+        help='Class CSS in menu.')
+    icon = fields.Char('Icon',
+        help='Icon name show in menu.')
+    login = fields.Boolean('Login', help='Allow login users')
+    manager = fields.Boolean('Manager', help='Allow manager users')
 
-    @staticmethod
-    def default_active():
-        return True
+    @fields.depends('name_uri', 'target_uri', 'name')
+    def on_change_with_name(self, name=None):
+        return (self.tareget_uri.name if self.name_uri and self.target_uri
+            else self.name)
 
     @staticmethod
     def default_left():
@@ -51,19 +71,15 @@ class Menu(ModelSQL, ModelView):
     def default_sequence():
         return 1
 
+    @staticmethod
+    def default_active():
+        return True
+
     @classmethod
     def __setup__(cls):
         super(Menu, cls).__setup__()
         cls._order.insert(0, ('sequence', 'ASC'))
         cls._order.insert(1, ('id', 'ASC'))
-
-    def on_change_name(self):
-        res = {}
-        if self.name and not self.code:
-            res['code'] = slugify(self.name)
-        if self.name and not self.slug:
-            res['slug'] = slugify(self.name)
-        return res
 
     @classmethod
     def validate(cls, menus):
@@ -78,69 +94,73 @@ class Menu(ModelSQL, ModelView):
         default['left'] = 0
         default['right'] = 0
 
-        new_menus = []
-        for menu in menus:
-            default['slug'] = '%s-copy' % menu.slug
-            new_menu, = super(Menu, cls).copy([menu], default=default)
-            new_menus.append(new_menu)
-        return new_menus
+        # new_menus = []
+        # for menu in menus:
+        #     new_menu, = super(Menu, cls).copy([menu], default=default)
+        #     new_menus.append(new_menu)
+        # return new_menus
+        return super(Menu, cls).copy(menus, default=default)
 
 
 class Article(ModelSQL, ModelView):
     "Article CMS"
     __name__ = 'galatea.cms.article'
-    name = fields.Char('Title', translate=True,
-        required=True, on_change=['name', 'slug'])
-    slug = fields.Char('Slug', required=True, translate=True,
-        help='Cannonical uri.')
-    slug_langs = fields.Function(fields.Dict(None, 'Slug Langs'), 'get_slug_langs')
-    uri = fields.Function(fields.Char('Uri'), 'get_uri')
-    description = fields.Text('Description', required=True, translate=True,
-        help='You could write wiki markup to create html content. Formats text following '
-        'the MediaWiki (http://meta.wikimedia.org/wiki/Help:Editing) syntax.')
-    metadescription = fields.Char('Meta Description', translate=True, 
-        help='Almost all search engines recommend it to be shorter ' \
-        'than 155 characters of plain text')
-    metakeywords = fields.Char('Meta Keywords',  translate=True,
-        help='Separated by comma')
-    metatitle = fields.Char('Meta Title',  translate=True)
-    template = fields.Char('Template', required=True)
-    active = fields.Boolean('Active',
-        help='Dissable to not show content article.')
-    visibility = fields.Selection([
-            ('public','Public'),
-            ('register','Register'),
-            ('manager','Manager'),
-            ], 'Visibility', required=True)
-    galatea_website = fields.Many2One('galatea.website', 'Website',
-        domain=[('active', '=', True)], required=True)
+    name = fields.Char('Title', translate=True, required=True)
+    canonical_uri = fields.Many2One('galatea.uri', 'Canonical URI',
+        required=True, select=True, domain=[
+            ('website', 'in', Eval('websites')),
+            ('type', '=', 'content'),
+            ('template.allowed_models.model', 'in', ['galatea.cms.article']),
+            ],
+        states={
+            'invisible': ~Greater(Eval('id', -1), 0),
+            }, depends=['websites', 'id'])
+    slug = fields.Function(fields.Char('Slug', translate=True, required=True),
+        'on_change_with_slug', setter='set_canonical_uri_field',
+        searcher='search_canonical_uri_field')
+    slug_langs = fields.Function(fields.Dict(None, 'Slug Langs'),
+        'get_slug_langs')
     _slug_langs_cache = Cache('galatea_cms_article.slug_langs')
+    # TODO: ha d'incloure el canonical_uri o tenir alternative_uris + camp
+    # funcional *uris*
+    uris = fields.One2Many('galatea.uri', 'content', 'URIs', readonly=True,
+        help='All article URIs')
+    uri = fields.Function(fields.Many2One('galatea.uri', 'URI'),
+        'get_uri', searcher='search_uri')
+    # TODO: maybe websites should be a searchable functional field as sum of
+    # canonical_uri/uris website field
+    websites = fields.Many2Many('galatea.cms.article-galatea.website',
+        'article', 'website', 'Websites', required=True,
+        help='Tutorial will be available in those websites')
+    description = fields.Text('Description', required=True, translate=True,
+        help='You could write wiki markup to create html content. Formats '
+        'text following the MediaWiki '
+        '(http://meta.wikimedia.org/wiki/Help:Editing) syntax.')
+    markup = fields.Selection([
+            (None, ''),
+            ('wikimedia', 'WikiMedia'),
+            ('rest', 'ReStructuredText'),
+            ], 'Markup')
+    metadescription = fields.Char('Meta Description', translate=True,
+        help='Almost all search engines recommend it to be shorter '
+        'than 155 characters of plain text')
+    metakeywords = fields.Char('Meta Keywords', translate=True,
+        help='Separated by comma')
+    metatitle = fields.Char('Meta Title', translate=True)
+    # TODO: I think it should go to another module which implements private
+    # area/portal features
+    visibility = fields.Selection([
+            ('public', 'Public'),
+            ('register', 'Register'),
+            ('manager', 'Manager'),
+            ], 'Visibility', required=True, select=True)
+    # TODO: extend getter/setter/searcher to all uris (is active is some uri is
+    # active)
+    active = fields.Function(fields.Boolean('Active',
+            help='Dissable to not show content article.'),
+        'get_active', setter='set_canonical_uri_field',
+        searcher='search_canonical_uri_field')
     attachments = fields.One2Many('ir.attachment', 'resource', 'Attachments')
-    wikimarkup = fields.Boolean('WikiMarkup',
-        help='Article use wiki markups')
-
-    @staticmethod
-    def default_active():
-        return True
-
-    @staticmethod
-    def default_visibility():
-        return 'public'
-
-    @staticmethod
-    def default_wikimarkup():
-        return True
-
-    @staticmethod
-    def default_template():
-        return 'cms-article.html'
-
-    @classmethod
-    def default_galatea_website(cls):
-        Website = Pool().get('galatea.website')
-        websites = Website.search([('active', '=', True)])
-        if len(websites) == 1:
-            return websites[0].id
 
     @classmethod
     def __setup__(cls):
@@ -151,24 +171,40 @@ class Article(ModelSQL, ModelView):
                 'Dissable active field.'),
             })
 
+    @fields.depends('name', 'slug')
     def on_change_name(self):
         res = {}
         if self.name and not self.slug:
             res['slug'] = slugify(self.name)
         return res
 
-    @classmethod
-    def copy(cls, posts, default=None):
-        new_posts = []
-        for post in posts:
-            default['slug'] = '%s-copy' % post.slug
-            new_post, = super(Article, cls).copy([post], default=default)
-            new_posts.append(new_post)
-        return new_posts
+    @fields.depends('canonical_uri', 'slug')
+    def on_change_with_slug(self, name=None):
+        if self.canonical_uri:
+            return self.canonical_uri.slug
+        if self.slug:
+            return slugify(self.slug)
 
     @classmethod
-    def delete(cls, posts):
-        cls.raise_user_error('delete_articles')
+    def set_canonical_uri_field(cls, articles, name, value):
+        pool = Pool()
+        Uri = pool.get('galatea.uri')
+        Uri.write([a.canonical_uri for a in articles if a.canonical_uri], {
+                name: value,
+                })
+
+    @classmethod
+    def search_canonical_uri_field(cls, name, clause):
+        domain = [
+            ('canonical_uri.%s' % name,) + tuple(clause[1:]),
+            ]
+        if clause == ['active', '=', False]:
+            domain = [
+                'OR',
+                domain,
+                [('canonical_uri', '=', None)],
+                ]
+        return domain
 
     def get_slug_langs(self, name):
         '''Return dict slugs by all languaes actives'''
@@ -187,18 +223,123 @@ class Article(ModelSQL, ModelView):
             with Transaction().set_context(language=lang.code):
                 article, = Article.read([article_id], ['slug'])
                 slugs[lang.code] = article['slug']
-
         return slugs
 
     def get_uri(self, name):
-        if self.galatea_website:
-            locale = Transaction().context.get('language', 'en')
-            return '%s%s/%s' % (
-                self.galatea_website.uri,
-                locale[:2],
-                self.slug,
-                )
-        return ''
+        if context.get('website', False):
+            for uri in self.uris:
+                if uri.website.id == context['website']:
+                    return uri
+        return self.canonical_uri
+
+    @classmethod
+    def search_uri(cls, name, clause):
+        if context.get('website', False):
+            # TODO: is it better and If()?
+            return [
+                ['OR', [
+                    ('canonical_uri',) + tuple(clause[1:]),
+                    ('website', '=', context['website']),
+                    ], [
+                    ('uris',) + tuple(clause[1:]),
+                    ('website', '=', context['website']),
+                    ]],
+                ]
+        return [
+            ['OR', [
+                ('canonical_uri',) + tuple(clause[1:]),
+                ], [
+                ('uris',) + tuple(clause[1:]),
+                ]],
+            ]
+
+    @classmethod
+    def default_websites(cls):
+        Website = Pool().get('galatea.website')
+        websites = Website.search([('active', '=', True)])
+        return [w.id for w in websites]
+
+    @staticmethod
+    def default_visibility():
+        return 'public'
+
+    @staticmethod
+    def default_active():
+        return True
+
+    def get_active(self, name):
+        return self.canonical_uri.active if self.canonical_uri else False
+
+    @classmethod
+    def create(cls, vlist):
+        pool = Pool()
+        Uri = pool.get('galatea.uri')
+        for vals in vlist:
+            if not vals.get('canonical_uri'):
+                assert vals.get('slug')
+                assert vals.get('websites')
+                uri, = Uri.create([{
+                            'website': vals['websites'][0],
+                            'title': vals['name'],
+                            'slug': vals['slug'],
+                            'type': 'content',
+                            'active': vals.get('active', cls.default_active()),
+                            }])
+                vals['canonical_uri'] = uri.id
+        new_articles = super(Article, cls).create(vlist)
+
+        uri_args = []
+        for article in new_articles:
+            if not article.canonical_uri.content:
+                uri_args.extend([article.canonical_uri], {
+                        'content': str(article),
+                        })
+        if uri_args:
+            Uri.write(*uri_args)
+        return new_articles
+
+    @classmethod
+    def copy(cls, articles, default=None):
+        pool = Pool()
+        Uri = pool.get('galatea.uri')
+
+        if default is None:
+            default = {}
+        else:
+            default = default.copy()
+        new_articles = []
+        for article in articles:
+            default['canonical_uri'] = Uri.copy([article.canonical_uri], {
+                    'slug': '%s-copy' % article.slug,
+                    })
+            new_articles += super(Article, cls).copy([article],
+                default=default)
+        return new_articles
+
+    @classmethod
+    def write(cls, *args):
+        pool = Pool()
+        Uri = pool.get('galatea.uri')
+        actions = iter(args)
+        for records, values in zip(actions, actions):
+            if values.get('canonical_uri'):
+                canonical_uri = Uri(values['canonical_uri'])
+                canonical_uri.content = records[0]
+                canonical_uri.save()
+        super(Article, cls).write(*args)
+
+    @classmethod
+    def delete(cls, articles):
+        cls.raise_user_error('delete_articles')
+
+
+class ArticleWebsite(ModelSQL):
+    'Galatea CMS Article - Website'
+    __name__ = 'galatea.cms.article-galatea.website'
+    article = fields.Many2One('galatea.cms.article', 'Article',
+        ondelete='CASCADE', select=True, required=True)
+    website = fields.Many2One('galatea.website', 'Website',
+        ondelete='RESTRICT', select=True, required=True)
 
 
 class Block(ModelSQL, ModelView):
@@ -212,13 +353,11 @@ class Block(ModelSQL, ModelView):
         ('remote_image', 'Remote Image'),
         ('custom_code', 'Custom Code'),
         ], 'Type', required=True)
-    file = fields.Many2One('galatea.static.file', 'File',
-        states = {
+    file = fields.Many2One('galatea.static.file', 'File', states={
             'required': Equal(Eval('type'), 'image'),
             'invisible': Not(Equal(Eval('type'), 'image'))
             })
-    remote_image_url = fields.Char('Remote Image URL',
-        states = {
+    remote_image_url = fields.Char('Remote Image URL', states={
             'required': Equal(Eval('type'), 'remote_image'),
             'invisible': Not(Equal(Eval('type'), 'remote_image'))
             })

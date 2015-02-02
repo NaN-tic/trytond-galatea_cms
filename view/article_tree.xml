@@ -3,8 +3,7 @@
 this repository contains the full copyright notices and license terms. -->
 <tree string="Articles">
     <field name="name"/>
-    <field name="slug"/>
+    <field name="canonical_uri"/>
     <field name="visibility"/>
-    <field name="galatea_website"/>
     <field name="active" tree_invisible="1"/>
 </tree>

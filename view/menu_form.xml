@@ -6,8 +6,12 @@ this repository contains the full copyright notices and license terms. -->
     <field name="name"/>
     <label name="code"/>
     <field name="code"/>
-    <label name="slug"/>
-    <field name="slug"/>
+    <label name="target_type"/>
+    <field name="target_type"/>
+    <label name="target_uri"/>
+    <field name="target_uri"/>
+    <label name="target_url"/>
+    <field name="target_url"/>
     <label name="parent"/>
     <field name="parent"/>
     <label name="sequence"/>

@@ -8,6 +8,7 @@ def register():
     Pool.register(
         Menu,
         Article,
+        ArticleWebsite,
         Block,
         Carousel,
         CarouselItem,

@@ -2,9 +2,12 @@
 <!-- This file is part galatea_cms of Tryton. The COPYRIGHT file at the top level of
 this repository contains the full copyright notices and license terms. -->
 <tree string="Menus">
-    <field name="name"/>
+    <field name="name_used"/>
+    <field name="name" tree_invisible="1"/>
     <field name="code"/>
-    <field name="slug"/>
+    <field name="target_type"/>
+    <field name="target_uri"/>
+    <field name="target_url"/>
     <field name="parent"/>
     <field name="sequence"/>
     <field name="active"/>
