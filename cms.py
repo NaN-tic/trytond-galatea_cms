@@ -5,7 +5,7 @@ from trytond.model import ModelSQL, ModelView, fields
 from trytond.pool import Pool, PoolMeta
 from trytond.transaction import Transaction
 from trytond.cache import Cache
-from trytond.pyson import Equal, Eval, Greater, In, Not
+from trytond.pyson import Bool, Equal, Eval, Greater, In, Not
 
 from .tools import slugify
 
@@ -21,10 +21,13 @@ class Menu(ModelSQL, ModelView):
     name = fields.Char('Name', translate=True, states={
             'readonly': Eval('name_uri', False),
             }, depends=['name_uri'])
-    name_uri = fields.Boolean('Use URI\'s name')
+    name_uri = fields.Boolean('Use URI\'s name', states={
+            'invisible': ((Eval('target_type', '') != 'internal_uri')
+                | ~Bool(Eval('target_uri'))),
+            }, depends=['target_type', 'target_uri'])
     name_used = fields.Function(fields.Char('Name', translate=True,
             required=True),
-        'on_change_with_name')
+        'on_change_with_name', searcher='search_name_used')
     code = fields.Char('Code', required=True,
         help='Internal code.')
     target_type = fields.Selection([
@@ -35,7 +38,7 @@ class Menu(ModelSQL, ModelView):
             'invisible': Eval('target_type', '') != 'internal_uri',
             }, depends=['target_uri'])
     target_url = fields.Char('Target URL', states={
-            'invisible': Eval('target_type', '') != 'ixternal_url',
+            'invisible': Eval('target_type', '') != 'external_url',
             }, depends=['target_type'])
     parent = fields.Many2One("galatea.cms.menu", "Parent", select=True)
     left = fields.Integer('Left', required=True, select=True)
@@ -56,8 +59,20 @@ class Menu(ModelSQL, ModelView):
 
     @fields.depends('name_uri', 'target_uri', 'name')
     def on_change_with_name(self, name=None):
-        return (self.tareget_uri.name if self.name_uri and self.target_uri
+        return (self.target_uri.name if self.name_uri and self.target_uri
             else self.name)
+
+    @classmethod
+    def search_name_used(cls, name, clause):
+        return [
+            ['OR', [
+                ('name_uri', '=', True),
+                ('target_uri.name',) + tuple(clause[1:]),
+                ], [
+                ('name_uri', '=', False),
+                ('name',) + tuple(clause[1:]),
+                ]],
+            ]
 
     @staticmethod
     def default_left():
@@ -226,14 +241,16 @@ class Article(ModelSQL, ModelView):
         return slugs
 
     def get_uri(self, name):
+        context = Transaction().context
         if context.get('website', False):
             for uri in self.uris:
                 if uri.website.id == context['website']:
-                    return uri
-        return self.canonical_uri
+                    return uri.id
+        return self.canonical_uri.id
 
     @classmethod
     def search_uri(cls, name, clause):
+        context = Transaction().context
         if context.get('website', False):
             # TODO: is it better and If()?
             return [
@@ -280,7 +297,7 @@ class Article(ModelSQL, ModelView):
                 assert vals.get('websites')
                 uri, = Uri.create([{
                             'website': vals['websites'][0],
-                            'title': vals['name'],
+                            'name': vals['name'],
                             'slug': vals['slug'],
                             'type': 'content',
                             'active': vals.get('active', cls.default_active()),
@@ -320,13 +337,32 @@ class Article(ModelSQL, ModelView):
     def write(cls, *args):
         pool = Pool()
         Uri = pool.get('galatea.uri')
+
         actions = iter(args)
-        for records, values in zip(actions, actions):
+        uri_args = []
+        for articles, values in zip(actions, actions):
             if values.get('canonical_uri'):
                 canonical_uri = Uri(values['canonical_uri'])
-                canonical_uri.content = records[0]
+                canonical_uri.content = articles[0]
                 canonical_uri.save()
+            if 'name' in values:
+                uri_todo = []
+                for article in articles:
+                    if article.canonical_uri.name == article.name:
+                        uri_todo.append(article.canonical_uri)
+                    for uri in article.uris:
+                        if uri.name == article.name and uri not in uri_todo:
+                            uri_todo.append(uri)
+                if uri_todo:
+                    # What happens if canonical_uri and name change?
+                    uri_args.append(uri_todo)
+                    uri_args.append({
+                            'name': values['name'],
+                            })
+
         super(Article, cls).write(*args)
+        if uri_args:
+            Uri.write(*uri_args)
 
     @classmethod
     def delete(cls, articles):
