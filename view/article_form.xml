@@ -10,6 +10,8 @@ this repository contains the full copyright notices and license terms. -->
     <field name="active"/>
     <label name="canonical_uri"/>
     <field name="canonical_uri"/>
+    <label name="template"/>
+    <field name="template"/>
     <notebook colspan="6">
         <page string="Descriptions" id="descriptions">
             <field name="description" colspan="4"/>
