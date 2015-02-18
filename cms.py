@@ -141,6 +141,11 @@ class Article(GalateaVisiblePage, ModelSQL, ModelView):
     @classmethod
     def __setup__(cls):
         super(Article, cls).__setup__()
+
+        domain_clause = ('allowed_models.model', 'in', ['galatea.cms.article'])
+        if domain_clause not in cls.template.domain:
+            cls.template.domain.append(domain_clause)
+
         cls._error_messages.update({
             'delete_articles': ('You can not delete '
                 'articles because you will get error 404 NOT Found. '
@@ -156,7 +161,10 @@ class Article(GalateaVisiblePage, ModelSQL, ModelView):
     @classmethod
     def calc_uri_vals(cls, record_vals):
         # TODO: calc parent and template?
-        return super(Article, cls).calc_uri_vals(record_vals)
+        uri_vals = super(Article, cls).calc_uri_vals(record_vals)
+        if 'template' in record_vals:
+            uri_vals['template'] = record_vals['template']
+        return uri_vals
 
     @classmethod
     def delete(cls, articles):
