@@ -4,6 +4,7 @@
 from trytond.model import ModelSQL, ModelView, fields
 from trytond.pool import Pool
 from trytond.pyson import Bool, Equal, Eval, In, Not
+from trytond.transaction import Transaction
 
 from trytond.modules.galatea import GalateaVisiblePage
 from trytond.modules.galatea.tools import slugify
@@ -168,7 +169,10 @@ class Article(GalateaVisiblePage, ModelSQL, ModelView):
 
     @classmethod
     def delete(cls, articles):
-        cls.raise_user_error('delete_articles')
+        if Transaction().user != 1:
+            # TODO: change by a user warning
+            cls.raise_user_error('delete_articles')
+        super(Article, cls).delete(articles)
 
 
 class ArticleWebsite(ModelSQL):
