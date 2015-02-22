@@ -4,11 +4,14 @@ this repository contains the full copyright notices and license terms. -->
 <tree string="Menus">
     <field name="name_used"/>
     <field name="name" tree_invisible="1"/>
+    <field name="parent"/>
     <field name="code"/>
     <field name="target_type"/>
     <field name="target_uri"/>
     <field name="target_url"/>
-    <field name="parent"/>
     <field name="sequence"/>
-    <field name="active"/>
+    <field name="nofollow"/>
+    <field name="login"/>
+    <field name="manager"/>
+    <field name="active" tree_invisible="1"/>
 </tree>

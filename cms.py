@@ -17,6 +17,7 @@ class Menu(ModelSQL, ModelView):
     "Menu CMS"
     __name__ = 'galatea.cms.menu'
     _rec_name = 'name_used'
+    _order = [('parent', 'ASC'), ('sequence', 'ASC'), ('id', 'ASC')]
 
     name = fields.Char('Name', translate=True, states={
             'readonly': Eval('name_uri', False),

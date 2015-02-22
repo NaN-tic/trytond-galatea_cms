@@ -1,17 +1,13 @@
 <?xml version="1.0"?>
 <!-- This file is part galatea_cms of Tryton. The COPYRIGHT file at the top level of
 this repository contains the full copyright notices and license terms. -->
-<tree string="Menus">
+<tree string="Menus" sequence="sequence">
     <field name="name_used"/>
     <field name="name" tree_invisible="1"/>
-    <field name="parent"/>
     <field name="code"/>
     <field name="target_type"/>
     <field name="target_uri"/>
     <field name="target_url"/>
-    <field name="sequence"/>
-    <field name="nofollow"/>
-    <field name="login"/>
-    <field name="manager"/>
-    <field name="active" tree_invisible="1"/>
+    <field name="active"/>
+    <field name="parent" tree_invisible="1"/>
 </tree>
