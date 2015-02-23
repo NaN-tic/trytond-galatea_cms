@@ -41,6 +41,8 @@ class Menu(ModelSQL, ModelView):
     target_url = fields.Char('Target URL', states={
             'invisible': Eval('target_type', '') != 'external_url',
             }, depends=['target_type'])
+    url = fields.Function(fields.Char('URL'),
+        'get_url')
     parent = fields.Many2One("galatea.cms.menu", "Parent", select=True)
     left = fields.Integer('Left', required=True, select=True)
     right = fields.Integer('Right', required=True, select=True)
@@ -57,6 +59,12 @@ class Menu(ModelSQL, ModelView):
         help='Icon name show in menu.')
     login = fields.Boolean('Login', help='Allow login users')
     manager = fields.Boolean('Manager', help='Allow manager users')
+
+    @classmethod
+    def __setup__(cls):
+        super(Menu, cls).__setup__()
+        cls._order.insert(0, ('sequence', 'ASC'))
+        cls._order.insert(1, ('id', 'ASC'))
 
     @fields.depends('name_uri', 'target_uri', 'name')
     def on_change_with_name(self, name=None):
@@ -75,6 +83,10 @@ class Menu(ModelSQL, ModelView):
                 ]],
             ]
 
+    def get_url(self, name):
+        return (self.target_url if self.target_type == 'external_url'
+            else (self.target_uri.uri if self.target_uri else '#'))
+
     @staticmethod
     def default_left():
         return 0
@@ -90,12 +102,6 @@ class Menu(ModelSQL, ModelView):
     @staticmethod
     def default_active():
         return True
-
-    @classmethod
-    def __setup__(cls):
-        super(Menu, cls).__setup__()
-        cls._order.insert(0, ('sequence', 'ASC'))
-        cls._order.insert(1, ('id', 'ASC'))
 
     @classmethod
     def validate(cls, menus):
