@@ -176,9 +176,7 @@ class Article(GalateaVisiblePage, ModelSQL, ModelView):
 
     @classmethod
     def delete(cls, articles):
-        if Transaction().user != 1:
-            # TODO: change by a user warning
-            cls.raise_user_error('delete_articles')
+        cls.raise_user_warning('delete_articles', 'delete_articles')
         super(Article, cls).delete(articles)
 
 
