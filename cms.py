@@ -5,6 +5,7 @@ from trytond.model import ModelSQL, ModelView, fields
 from trytond.pool import Pool
 from trytond.pyson import Bool, Equal, Eval, In, Not
 from trytond.transaction import Transaction
+from trytond import backend
 
 from trytond.modules.galatea import GalateaVisiblePage
 from trytond.modules.galatea.tools import slugify
@@ -159,6 +160,18 @@ class Article(GalateaVisiblePage, ModelSQL, ModelView):
                 'articles because you will get error 404 NOT Found. '
                 'Dissable active field.'),
             })
+
+    @classmethod
+    def __register__(cls, module_name):
+        TableHandler = backend.get('TableHandler')
+        cursor = Transaction().cursor
+        table = TableHandler(cursor, cls, module_name)
+
+        super(Article, cls).__register__(module_name)
+
+        table = TableHandler(cursor, cls, module_name)
+        table.not_null_action('galatea_website', action='remove')
+        table.not_null_action('template', action='remove')
 
     @classmethod
     def default_websites(cls):
