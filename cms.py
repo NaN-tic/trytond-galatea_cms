@@ -205,8 +205,7 @@ class ArticleWebsite(ModelSQL):
 class Block(ModelSQL, ModelView):
     "Block CMS"
     __name__ = 'galatea.cms.block'
-    name = fields.Char('Name', required=True,
-        on_change=['name', 'code', 'slug'])
+    name = fields.Char('Name', required=True)
     code = fields.Char('Code', required=True, help='Internal code.')
     type = fields.Selection([
         ('image', 'Image'),
@@ -266,18 +265,16 @@ class Block(ModelSQL, ModelView):
     def default_visibility():
         return 'public'
 
+    @fields.depends('name', 'code')
     def on_change_name(self):
-        res = {}
         if self.name and not self.code:
-            res['code'] = slugify(self.name)
-        return res
+            self.code = slugify(self.name)
 
 
 class Carousel(ModelSQL, ModelView):
     "Carousel CMS"
     __name__ = 'galatea.cms.carousel'
-    name = fields.Char('Name', translate=True,
-        required=True, on_change=['name', 'code'])
+    name = fields.Char('Name', translate=True, required=True)
     code = fields.Char('Code', required=True,
         help='Internal code. Use characters az09')
     active = fields.Boolean('Active', select=True)
@@ -288,10 +285,8 @@ class Carousel(ModelSQL, ModelView):
         return True
 
     def on_change_name(self):
-        res = {}
         if self.name and not self.code:
-            res['code'] = slugify(self.name)
-        return res
+            self.code = slugify(self.name)
 
 
 class CarouselItem(ModelSQL, ModelView):
