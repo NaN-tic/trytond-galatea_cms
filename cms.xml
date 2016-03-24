@@ -43,7 +43,7 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
         <record model="ir.action.act_window" id="act_cms_menu_tree">
             <field name="name">Menus</field>
             <field name="res_model">galatea.cms.menu</field>
-            <field name="domain">[('parent', '=', None)]</field>
+            <field name="domain" eval="[('parent', '=', None)]" pyson="1"/>
         </record>
         <record model="ir.action.act_window.view" id="act_cms_menu_tree_view1">
             <field name="sequence" eval="10"/>
@@ -163,7 +163,7 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
         </record>
         <menuitem parent="menu_galatea_cms" action="act_cms_carousel_form"
             id="menu_cms_carousel_form"/>
-            
+
         <!-- galatea.cms.carousel.item -->
         <record model="ir.ui.view" id="cms_carousel_item_view_form">
             <field name="model">galatea.cms.carousel.item</field>
