@@ -6,6 +6,8 @@ this repository contains the full copyright notices and license terms. -->
     <field name="name"/>
     <label name="code"/>
     <field name="code"/>
+    <label name="website"/>
+    <field name="website"/>
     <label name="target_type"/>
     <field name="target_type"/>
     <newline/>

@@ -8,6 +8,7 @@ this repository contains the full copyright notices and license terms. -->
     <field name="target_type"/>
     <field name="target_uri"/>
     <field name="target_url"/>
+    <field name="website"/>
     <field name="active"/>
     <field name="parent" tree_invisible="1"/>
 </tree>
