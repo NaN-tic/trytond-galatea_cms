@@ -20,6 +20,8 @@ class Menu(ModelSQL, ModelView):
     _rec_name = 'name_used'
     _order = [('parent', 'ASC'), ('sequence', 'ASC'), ('id', 'ASC')]
 
+    website = fields.Many2One('galatea.website', 'Website',
+        ondelete='RESTRICT', select=True, required=True)
     name = fields.Char('Name', translate=True, states={
             'readonly': Eval('name_uri', False),
             }, depends=['name_uri'])
@@ -38,13 +40,17 @@ class Menu(ModelSQL, ModelView):
             ], 'Type', required=True)
     target_uri = fields.Many2One('galatea.uri', 'Target URI', states={
             'invisible': Eval('target_type', '') != 'internal_uri',
-            }, depends=['target_uri'])
+            }, domain=[
+            ('website', '=', Eval('website')),
+            ], depends=['target_uri', 'website'])
     target_url = fields.Char('Target URL', states={
             'invisible': Eval('target_type', '') != 'external_url',
             }, depends=['target_type'])
     url = fields.Function(fields.Char('URL'),
         'get_url')
-    parent = fields.Many2One("galatea.cms.menu", "Parent", select=True)
+    parent = fields.Many2One('galatea.cms.menu', 'Parent', domain=[
+            ('website', '=', Eval('website')),
+            ], depends=['website'], select=True)
     left = fields.Integer('Left', required=True, select=True)
     right = fields.Integer('Right', required=True, select=True)
     childs = fields.One2Many('galatea.cms.menu', 'parent', 'Children')
@@ -52,8 +58,7 @@ class Menu(ModelSQL, ModelView):
     nofollow = fields.Boolean('Nofollow',
         help='Add attribute in links to not search engines continue')
     active = fields.Boolean('Active', select=True)
-    # TODO: add website field? add domain in target_uri parent
-    # TODO: I think next fields should go to another module
+    # TODO: I think the following fields should go to another module
     css = fields.Char('CSS',
         help='Class CSS in menu.')
     icon = fields.Char('Icon',
