@@ -177,86 +177,121 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
         </record>
 
         <!-- Access -->
+        <record model="ir.model.access" id="access_galatea_cms_menu_cms">
+            <field name="model" search="[('model', '=', 'galatea.cms.menu')]"/>
+            <field name="group" ref="group_galatea_cms"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_delete" eval="True"/>
+        </record>
+        <record model="ir.model.access" id="access_galatea_cms_menu_galatea">
+            <field name="model" search="[('model', '=', 'galatea.cms.menu')]"/>
+            <field name="group" ref="galatea.group_galatea"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_delete" eval="False"/>
+        </record>
         <record model="ir.model.access" id="access_galatea_cms_menu">
             <field name="model" search="[('model', '=', 'galatea.cms.menu')]"/>
+            <field name="perm_read" eval="False"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_delete" eval="False"/>
+        </record>
+
+        <record model="ir.model.access" id="access_galatea_cms_article_cms">
+            <field name="model" search="[('model', '=', 'galatea.cms.article')]"/>
             <field name="group" ref="group_galatea_cms"/>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="True"/>
             <field name="perm_create" eval="True"/>
             <field name="perm_delete" eval="True"/>
         </record>
-        <record model="ir.model.access" id="access_galatea_galatea_cms_menu">
-            <field name="model" search="[('model', '=', 'galatea.cms.menu')]"/>
+        <record model="ir.model.access" id="access_galatea_cms_article_galatea">
+            <field name="model" search="[('model', '=', 'galatea.cms.article')]"/>
             <field name="group" ref="galatea.group_galatea"/>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="False"/>
             <field name="perm_create" eval="False"/>
             <field name="perm_delete" eval="False"/>
         </record>
-
         <record model="ir.model.access" id="access_galatea_cms_article">
             <field name="model" search="[('model', '=', 'galatea.cms.article')]"/>
+            <field name="perm_read" eval="False"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_delete" eval="False"/>
+        </record>
+
+        <record model="ir.model.access" id="access_galatea_cms_block_cms">
+            <field name="model" search="[('model', '=', 'galatea.cms.block')]"/>
             <field name="group" ref="group_galatea_cms"/>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="True"/>
             <field name="perm_create" eval="True"/>
             <field name="perm_delete" eval="True"/>
         </record>
-        <record model="ir.model.access" id="access_galatea_galatea_cms_article">
-            <field name="model" search="[('model', '=', 'galatea.cms.article')]"/>
+        <record model="ir.model.access" id="access_galatea_cms_block_galatea">
+            <field name="model" search="[('model', '=', 'galatea.cms.block')]"/>
             <field name="group" ref="galatea.group_galatea"/>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="False"/>
             <field name="perm_create" eval="False"/>
             <field name="perm_delete" eval="False"/>
         </record>
-
         <record model="ir.model.access" id="access_galatea_cms_block">
             <field name="model" search="[('model', '=', 'galatea.cms.block')]"/>
+            <field name="perm_read" eval="False"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_delete" eval="False"/>
+        </record>
+
+        <record model="ir.model.access" id="access_galatea_cms_carousel_cms">
+            <field name="model" search="[('model', '=', 'galatea.cms.carousel')]"/>
             <field name="group" ref="group_galatea_cms"/>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="True"/>
             <field name="perm_create" eval="True"/>
             <field name="perm_delete" eval="True"/>
         </record>
-        <record model="ir.model.access" id="access_galatea_galatea_cms_block">
-            <field name="model" search="[('model', '=', 'galatea.cms.block')]"/>
+        <record model="ir.model.access" id="access_galatea_cms_carousel_galatea">
+            <field name="model" search="[('model', '=', 'galatea.cms.carousel')]"/>
             <field name="group" ref="galatea.group_galatea"/>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="False"/>
             <field name="perm_create" eval="False"/>
             <field name="perm_delete" eval="False"/>
         </record>
-
         <record model="ir.model.access" id="access_galatea_cms_carousel">
             <field name="model" search="[('model', '=', 'galatea.cms.carousel')]"/>
+            <field name="perm_read" eval="False"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_delete" eval="False"/>
+        </record>
+
+        <record model="ir.model.access" id="access_galatea_cms_carousel_item_cms">
+            <field name="model" search="[('model', '=', 'galatea.cms.carousel.item')]"/>
             <field name="group" ref="group_galatea_cms"/>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="True"/>
             <field name="perm_create" eval="True"/>
             <field name="perm_delete" eval="True"/>
         </record>
-        <record model="ir.model.access" id="access_galatea_galatea_cms_carousel">
-            <field name="model" search="[('model', '=', 'galatea.cms.carousel')]"/>
+        <record model="ir.model.access" id="access_galatea_galatea_cms_carousel_item_galatea">
+            <field name="model" search="[('model', '=', 'galatea.cms.carousel.item')]"/>
             <field name="group" ref="galatea.group_galatea"/>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="False"/>
             <field name="perm_create" eval="False"/>
             <field name="perm_delete" eval="False"/>
         </record>
-
         <record model="ir.model.access" id="access_galatea_cms_carousel_item">
             <field name="model" search="[('model', '=', 'galatea.cms.carousel.item')]"/>
-            <field name="group" ref="group_galatea_cms"/>
-            <field name="perm_read" eval="True"/>
-            <field name="perm_write" eval="True"/>
-            <field name="perm_create" eval="True"/>
-            <field name="perm_delete" eval="True"/>
-        </record>
-        <record model="ir.model.access" id="access_galatea_galatea_cms_carousel_item">
-            <field name="model" search="[('model', '=', 'galatea.cms.carousel.item')]"/>
-            <field name="group" ref="galatea.group_galatea"/>
-            <field name="perm_read" eval="True"/>
+            <field name="perm_read" eval="False"/>
             <field name="perm_write" eval="False"/>
             <field name="perm_create" eval="False"/>
             <field name="perm_delete" eval="False"/>
