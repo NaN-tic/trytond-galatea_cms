@@ -1,4 +1,4 @@
-# 
+#
 msgid ""
 msgstr "Content-Type: text/plain; charset=utf-8\n"
 
@@ -18,6 +18,10 @@ msgctxt "field:galatea.cms.article,attachments:"
 msgid "Attachments"
 msgstr "Adjunts"
 
+msgctxt "field:galatea.cms.article,canonical_uri:"
+msgid "Canonical URI"
+msgstr "Canonical URI"
+
 msgctxt "field:galatea.cms.article,create_date:"
 msgid "Create Date"
 msgstr "Data creació"
@@ -30,13 +34,13 @@ msgctxt "field:galatea.cms.article,description:"
 msgid "Description"
 msgstr "Descripció"
 
-msgctxt "field:galatea.cms.article,galatea_website:"
-msgid "Website"
-msgstr "Lloc web"
-
 msgctxt "field:galatea.cms.article,id:"
 msgid "ID"
 msgstr "ID"
+
+msgctxt "field:galatea.cms.article,markup:"
+msgid "Markup"
+msgstr "Markup"
 
 msgctxt "field:galatea.cms.article,metadescription:"
 msgid "Meta Description"
@@ -62,31 +66,63 @@ msgctxt "field:galatea.cms.article,slug:"
 msgid "Slug"
 msgstr "Slug"
 
-msgctxt "field:galatea.cms.article,slug_langs:"
-msgid "Slug Langs"
-msgstr "Slug idiomes"
-
 msgctxt "field:galatea.cms.article,template:"
 msgid "Template"
 msgstr "Plantilla"
 
 msgctxt "field:galatea.cms.article,uri:"
-msgid "Uri"
+msgid "URI"
 msgstr "Uri"
+
+msgctxt "field:galatea.cms.article,uris:"
+msgid "URIs"
+msgstr "URIs"
 
 msgctxt "field:galatea.cms.article,visibility:"
 msgid "Visibility"
 msgstr "Visibilidad"
 
-msgctxt "field:galatea.cms.article,wikimarkup:"
-msgid "WikiMarkup"
-msgstr "WikiMarkup"
+msgctxt "field:galatea.cms.article,websites:"
+msgid "Websites"
+msgstr "Llocs web"
 
 msgctxt "field:galatea.cms.article,write_date:"
 msgid "Write Date"
 msgstr "Data modificació"
 
 msgctxt "field:galatea.cms.article,write_uid:"
+msgid "Write User"
+msgstr "Usuari modificació"
+
+msgctxt "field:galatea.cms.article-galatea.website,article:"
+msgid "Article"
+msgstr "Article"
+
+msgctxt "field:galatea.cms.article-galatea.website,create_date:"
+msgid "Create Date"
+msgstr "Data creació"
+
+msgctxt "field:galatea.cms.article-galatea.website,create_uid:"
+msgid "Create User"
+msgstr "Usuari creació"
+
+msgctxt "field:galatea.cms.article-galatea.website,id:"
+msgid "ID"
+msgstr "ID"
+
+msgctxt "field:galatea.cms.article-galatea.website,rec_name:"
+msgid "Name"
+msgstr "Nom"
+
+msgctxt "field:galatea.cms.article-galatea.website,website:"
+msgid "Website"
+msgstr "Lloc Web"
+
+msgctxt "field:galatea.cms.article-galatea.website,write_date:"
+msgid "Write Date"
+msgstr "Usuari creació"
+
+msgctxt "field:galatea.cms.article-galatea.website,write_uid:"
 msgid "Write User"
 msgstr "Usuari modificació"
 
@@ -304,13 +340,21 @@ msgstr "Esquerra"
 
 msgctxt "field:galatea.cms.menu,login:"
 msgid "Login"
-msgstr "Identificat"
+msgstr "Identificador"
 
 msgctxt "field:galatea.cms.menu,manager:"
 msgid "Manager"
 msgstr "Gestor"
 
 msgctxt "field:galatea.cms.menu,name:"
+msgid "Name"
+msgstr "Nom"
+
+msgctxt "field:galatea.cms.menu,name_uri:"
+msgid "Use URI's name"
+msgstr "Utilitza nom URI's"
+
+msgctxt "field:galatea.cms.menu,name_used:"
 msgid "Name"
 msgstr "Nom"
 
@@ -334,9 +378,21 @@ msgctxt "field:galatea.cms.menu,sequence:"
 msgid "Sequence"
 msgstr "Seqüència"
 
-msgctxt "field:galatea.cms.menu,slug:"
-msgid "Slug"
-msgstr "Slug"
+msgctxt "field:galatea.cms.menu,target_type:"
+msgid "Type"
+msgstr "Tipus"
+
+msgctxt "field:galatea.cms.menu,target_uri:"
+msgid "Target URI"
+msgstr "Target URI"
+
+msgctxt "field:galatea.cms.menu,target_url:"
+msgid "Target URL"
+msgstr "Target URL"
+
+msgctxt "field:galatea.cms.menu,url:"
+msgid "URL"
+msgstr "URL"
 
 msgctxt "field:galatea.cms.menu,write_date:"
 msgid "Write Date"
@@ -347,7 +403,7 @@ msgid "Write User"
 msgstr "Usuari modificació"
 
 msgctxt "help:galatea.cms.article,active:"
-msgid "Dissable to not show content article."
+msgid "Dissable to not show this content."
 msgstr "Desactivar per no mostrar contingut article."
 
 msgctxt "help:galatea.cms.article,description:"
@@ -369,14 +425,6 @@ msgstr ""
 msgctxt "help:galatea.cms.article,metakeywords:"
 msgid "Separated by comma"
 msgstr "Separat amb coma."
-
-msgctxt "help:galatea.cms.article,slug:"
-msgid "Cannonical uri."
-msgstr "Cannonical uri."
-
-msgctxt "help:galatea.cms.article,wikimarkup:"
-msgid "Article use wiki markups"
-msgstr "L'article utilitza wiki markups"
 
 msgctxt "help:galatea.cms.block,code:"
 msgid "Internal code."
@@ -441,13 +489,13 @@ msgstr ""
 "Afegeix un atribut en els vincles perquè els motors de cerca no continuïn "
 "amb aquest vincle."
 
-msgctxt "help:galatea.cms.menu,slug:"
-msgid "Cannonical uri."
-msgstr "Cannonical uri."
-
 msgctxt "model:galatea.cms.article,name:"
 msgid "Article CMS"
 msgstr "CMS Article"
+
+msgctxt "model:galatea.cms.article-galatea.website,name:"
+msgid "Galatea CMS Article - Website"
+msgstr "Article Galatea CMS - Lloc web"
 
 msgctxt "model:galatea.cms.block,name:"
 msgid "Block CMS"
@@ -513,6 +561,18 @@ msgctxt "model:res.group,name:group_galatea_cms"
 msgid "Galatea CMS"
 msgstr "Galatea CMS"
 
+msgctxt "selection:galatea.cms.article,markup:"
+msgid ""
+msgstr ""
+
+msgctxt "selection:galatea.cms.article,markup:"
+msgid "ReStructuredText"
+msgstr "ReStructuredText"
+
+msgctxt "selection:galatea.cms.article,markup:"
+msgid "WikiMedia"
+msgstr "WikiMedia"
+
 msgctxt "selection:galatea.cms.article,visibility:"
 msgid "Manager"
 msgstr "Gestor"
@@ -548,6 +608,14 @@ msgstr "Públic"
 msgctxt "selection:galatea.cms.block,visibility:"
 msgid "Register"
 msgstr "Registrat"
+
+msgctxt "selection:galatea.cms.menu,target_type:"
+msgid "External URL"
+msgstr "URL externa"
+
+msgctxt "selection:galatea.cms.menu,target_type:"
+msgid "Internal URI"
+msgstr "URI interna"
 
 msgctxt "view:galatea.cms.article:"
 msgid "Article"
