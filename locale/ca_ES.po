@@ -18,6 +18,10 @@ msgctxt "field:galatea.cms.article,attachments:"
 msgid "Attachments"
 msgstr "Adjunts"
 
+msgctxt "field:galatea.cms.article,blocks:"
+msgid "Blocks"
+msgstr "Blocs"
+
 msgctxt "field:galatea.cms.article,canonical_uri:"
 msgid "Canonical URI"
 msgstr "Canonical URI"
@@ -123,6 +127,42 @@ msgid "Write Date"
 msgstr "Usuari creació"
 
 msgctxt "field:galatea.cms.article-galatea.website,write_uid:"
+msgid "Write User"
+msgstr "Usuari modificació"
+
+msgctxt "field:galatea.cms.article.block,article:"
+msgid "Article"
+msgstr "Article"
+
+msgctxt "field:galatea.cms.article.block,block:"
+msgid "Block"
+msgstr "Bloc"
+
+msgctxt "field:galatea.cms.article.block,create_date:"
+msgid "Create Date"
+msgstr "Data creació"
+
+msgctxt "field:galatea.cms.article.block,create_uid:"
+msgid "Create User"
+msgstr "Usuari creació"
+
+msgctxt "field:galatea.cms.article.block,id:"
+msgid "ID"
+msgstr "ID"
+
+msgctxt "field:galatea.cms.article.block,rec_name:"
+msgid "Name"
+msgstr "Nom"
+
+msgctxt "field:galatea.cms.article.block,sequence:"
+msgid "Sequence"
+msgstr "Seqüència"
+
+msgctxt "field:galatea.cms.article.block,write_date:"
+msgid "Write Date"
+msgstr "Usuari creació"
+
+msgctxt "field:galatea.cms.article.block,write_uid:"
 msgid "Write User"
 msgstr "Usuari modificació"
 
@@ -394,6 +434,10 @@ msgctxt "field:galatea.cms.menu,url:"
 msgid "URL"
 msgstr "URL"
 
+msgctxt "field:galatea.cms.menu,website:"
+msgid "Website"
+msgstr "Lloc Web"
+
 msgctxt "field:galatea.cms.menu,write_date:"
 msgid "Write Date"
 msgstr "Data modificació"
@@ -496,6 +540,10 @@ msgstr "CMS Article"
 msgctxt "model:galatea.cms.article-galatea.website,name:"
 msgid "Galatea CMS Article - Website"
 msgstr "Article Galatea CMS - Lloc web"
+
+msgctxt "model:galatea.cms.article.block,name:"
+msgid "Article Block CMS"
+msgstr "CMS Article Block"
 
 msgctxt "model:galatea.cms.block,name:"
 msgid "Block CMS"
@@ -617,6 +665,14 @@ msgctxt "selection:galatea.cms.menu,target_type:"
 msgid "Internal URI"
 msgstr "URI interna"
 
+msgctxt "view:galatea.cms.article.block:"
+msgid "Article Block"
+msgstr "Blocs article"
+
+msgctxt "view:galatea.cms.article.block:"
+msgid "Article Blocks"
+msgstr "Blocs article"
+
 msgctxt "view:galatea.cms.article:"
 msgid "Article"
 msgstr "Article"
@@ -624,10 +680,6 @@ msgstr "Article"
 msgctxt "view:galatea.cms.article:"
 msgid "Articles"
 msgstr "Articles"
-
-msgctxt "view:galatea.cms.article:"
-msgid "Attachments"
-msgstr "Adjunts"
 
 msgctxt "view:galatea.cms.article:"
 msgid "Descriptions"
