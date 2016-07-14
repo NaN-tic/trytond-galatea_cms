@@ -81,7 +81,6 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
             <field name="type">form</field>
             <field name="name">article_form</field>
         </record>
-
         <record model="ir.ui.view" id="cms_article_view_tree">
             <field name="model">galatea.cms.article</field>
             <field name="type">tree</field>
@@ -105,6 +104,18 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
 
         <menuitem parent="menu_galatea_cms" action="act_cms_article_form"
             id="menu_cms_article_form"/>
+
+        <!-- galatea.cms.article.block -->
+        <record model="ir.ui.view" id="cms_article_block_view_form">
+            <field name="model">galatea.cms.article.block</field>
+            <field name="type">form</field>
+            <field name="name">article_block_form</field>
+        </record>
+        <record model="ir.ui.view" id="cms_article_block_view_tree">
+            <field name="model">galatea.cms.article.block</field>
+            <field name="type">tree</field>
+            <field name="name">article_block_tree</field>
+        </record>
 
         <!-- galatea.cms.block -->
         <record model="ir.ui.view" id="cms_block_view_form">
