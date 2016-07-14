@@ -9,7 +9,7 @@ from trytond import backend
 from trytond.modules.galatea import GalateaVisiblePage
 from trytond.modules.galatea.tools import slugify
 
-__all__ = ['Menu', 'Article', 'ArticleWebsite', 'Block',
+__all__ = ['Menu', 'Article', 'ArticleBlock', 'ArticleWebsite', 'Block',
     'Carousel', 'CarouselItem']
 
 
@@ -150,6 +150,7 @@ class Article(GalateaVisiblePage, ModelSQL, ModelView):
         help='Separated by comma')
     metatitle = fields.Char('Meta Title', translate=True)
     attachments = fields.One2Many('ir.attachment', 'resource', 'Attachments')
+    blocks = fields.One2Many('galatea.cms.article.block', 'article', 'Blocks')
 
     @classmethod
     def __setup__(cls):
@@ -193,6 +194,20 @@ class Article(GalateaVisiblePage, ModelSQL, ModelView):
     def delete(cls, articles):
         cls.raise_user_warning('delete_articles', 'delete_articles')
         super(Article, cls).delete(articles)
+
+
+class ArticleBlock(ModelSQL, ModelView):
+    "Article Block CMS"
+    __name__ = 'galatea.cms.article.block'
+    article = fields.Many2One('galatea.cms.article', 'Article',
+        required=True)
+    block = fields.Many2One('galatea.cms.block', 'Block',
+        required=True)
+    sequence = fields.Integer('Sequence')
+
+    @staticmethod
+    def default_sequence():
+        return 1
 
 
 class ArticleWebsite(ModelSQL):
@@ -255,13 +270,11 @@ class Block(ModelSQL, ModelView):
 
     @staticmethod
     def default_active():
-        'Return True'
         return True
 
     @staticmethod
     def default_type():
-        'Return Image'
-        return 'image'
+        return 'custom_code'
 
     @staticmethod
     def default_visibility():
