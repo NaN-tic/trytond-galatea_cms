@@ -92,6 +92,13 @@ class Menu(ModelSQL, ModelView):
         return (self.target_url if self.target_type == 'external_url'
             else (self.target_uri.uri if self.target_uri else '#'))
 
+    @classmethod
+    def default_website(cls):
+        Website = Pool().get('galatea.website')
+        websites = Website.search([])
+        if len(websites) == 1:
+            return websites[0].id
+
     @staticmethod
     def default_left():
         return 0
