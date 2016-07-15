@@ -216,6 +216,11 @@ class ArticleBlock(ModelSQL, ModelView):
     def default_sequence():
         return 1
 
+    @classmethod
+    def __setup__(cls):
+        super(ArticleBlock, cls).__setup__()
+        cls._order.insert(0, ('sequence', 'ASC'))
+
 
 class ArticleWebsite(ModelSQL):
     'Galatea CMS Article - Website'
