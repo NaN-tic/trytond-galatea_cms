@@ -141,10 +141,8 @@ class Article(GalateaVisiblePage, ModelSQL, ModelView):
     __name__ = 'galatea.cms.article'
     websites = fields.Many2Many('galatea.cms.article-galatea.website',
         'article', 'website', 'Websites', required=True)
-    description = fields.Text('Description', required=True, translate=True,
-        help='You could write wiki markup to create html content. Formats '
-        'text following the MediaWiki '
-        '(http://meta.wikimedia.org/wiki/Help:Editing) syntax.')
+    description = fields.Text('Description', translate=True,
+        help='You could write wiki or RST markups to create html content.')
     markup = fields.Selection([
             (None, ''),
             ('wikimedia', 'WikiMedia'),
@@ -254,8 +252,7 @@ class Block(ModelSQL, ModelView):
             'required': Equal(Eval('type'), 'custom_code'),
             'invisible': Not(Equal(Eval('type'), 'custom_code'))
             },
-        help='You could write wiki markup to create html content. Formats text following '
-        'the MediaWiki (http://meta.wikimedia.org/wiki/Help:Editing) syntax.')
+        help='You could write wiki or RST markups to create html content.')
     height = fields.Integer('Height',
         states = {
             'invisible': Not(In(Eval('type'), ['image', 'remote_image']))
