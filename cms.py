@@ -278,6 +278,12 @@ class Block(ModelSQL, ModelView):
             ], 'Visibility', required=True)
     css = fields.Char('CSS',
         help='Seperated styles by a space')
+    title = fields.Char('Title', translate=True)
+    paragraph1 = fields.Char('Paragraph 1', translate=True)
+    paragraph2 = fields.Char('Paragraph 2', translate=True)
+    paragraph3 = fields.Char('Paragraph 3', translate=True)
+    paragraph4 = fields.Char('Paragraph 4', translate=True)
+    paragraph5 = fields.Char('Paragraph 5', translate=True)
 
     @staticmethod
     def default_active():
