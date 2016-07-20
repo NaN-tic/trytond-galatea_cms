@@ -276,6 +276,8 @@ class Block(ModelSQL, ModelView):
             ('register','Register'),
             ('manager','Manager'),
             ], 'Visibility', required=True)
+    css = fields.Char('CSS',
+        help='Seperated styles by a space')
 
     @staticmethod
     def default_active():

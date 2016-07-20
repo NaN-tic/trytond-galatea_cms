@@ -28,6 +28,8 @@ this repository contains the full copyright notices and license terms. -->
         <page string="Extra" id="extra">
             <label name="visibility"/>
             <field name="visibility"/>
+            <label name="css"/>
+            <field name="css"/>
         </page>
         <page string="SEO" id="seo">
             <label name="alternative_text"/>
