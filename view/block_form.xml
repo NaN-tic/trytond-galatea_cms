@@ -31,6 +31,20 @@ this repository contains the full copyright notices and license terms. -->
             <label name="css"/>
             <field name="css"/>
         </page>
+        <page string="CMS" id="cms">
+            <label name="title"/>
+            <field name="title"/>
+            <label name="paragraph1"/>
+            <field name="paragraph1"/>
+            <label name="paragraph2"/>
+            <field name="paragraph2"/>
+            <label name="paragraph3"/>
+            <field name="paragraph3"/>
+            <label name="paragraph4"/>
+            <field name="paragraph4"/>
+            <label name="paragraph5"/>
+            <field name="paragraph5"/>
+        </page>
         <page string="SEO" id="seo">
             <label name="alternative_text"/>
             <field name="alternative_text"/>
