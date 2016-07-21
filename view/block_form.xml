@@ -34,16 +34,33 @@ this repository contains the full copyright notices and license terms. -->
         <page string="CMS" id="cms">
             <label name="title"/>
             <field name="title"/>
-            <label name="paragraph1"/>
-            <field name="paragraph1"/>
-            <label name="paragraph2"/>
-            <field name="paragraph2"/>
-            <label name="paragraph3"/>
-            <field name="paragraph3"/>
-            <label name="paragraph4"/>
-            <field name="paragraph4"/>
-            <label name="paragraph5"/>
-            <field name="paragraph5"/>
+            <label name="show_title"/>
+            <field name="show_title"/>
+            <label name="markup"/>
+            <field name="markup"/>
+            <separator name="paragraph1" colspan="4"/>
+            <field name="paragraph1" colspan="4"/>
+            <separator name="paragraph2" colspan="4"/>
+            <field name="paragraph2" colspan="4"/>
+            <separator name="paragraph3" colspan="4"/>
+            <field name="paragraph3" colspan="4"/>
+            <separator name="paragraph4" colspan="4"/>
+            <field name="paragraph4" colspan="4"/>
+            <separator name="paragraph5" colspan="4"/>
+            <field name="paragraph5" colspan="4"/>
+            <separator string="Cover Images" colspan="4"/>
+            <label name="cover_image_align"/>
+            <field name="cover_image_align"/>
+            <label name="cover_image1"/>
+            <field name="cover_image1"/>
+            <label name="cover_image2"/>
+            <field name="cover_image2"/>
+            <label name="cover_image3"/>
+            <field name="cover_image3"/>
+            <label name="cover_image4"/>
+            <field name="cover_image4"/>
+            <label name="cover_image5"/>
+            <field name="cover_image5"/>
         </page>
         <page string="SEO" id="seo">
             <label name="alternative_text"/>
