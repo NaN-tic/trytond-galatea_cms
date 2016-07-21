@@ -11,6 +11,23 @@ from trytond.modules.galatea.tools import slugify
 
 __all__ = ['Menu', 'Article', 'ArticleBlock', 'ArticleWebsite', 'Block',
     'Carousel', 'CarouselItem']
+_BLOCK_TYPES = [
+    ('image', 'Image'),
+    ('remote_image', 'Remote Image'),
+    ('custom_code', 'Custom Code'),
+    ('section_description', 'Section Description'),
+    ]
+_BLOCK_COVER_IMAGE_DOMAIN = [
+        ('resource', '=', Eval('attachment_resource')),
+    ]
+_BLOCK_COVER_IMAGE_STATES = {
+        'readonly': Eval('id', 0) <= 0,
+    }
+_BLOCK_COVER_IMAGE_CONTEXT = {
+        'resource': Eval('attachment_resource'),
+    }
+_BLOCK_COVER_IMAGE_DEPENDS =['attachment_resource']
+_BLOCK_TITLE_REQUIRED = ['section_description']
 
 
 class Menu(ModelSQL, ModelView):
@@ -234,11 +251,7 @@ class Block(ModelSQL, ModelView):
     __name__ = 'galatea.cms.block'
     name = fields.Char('Name', required=True)
     code = fields.Char('Code', required=True, help='Internal code.')
-    type = fields.Selection([
-        ('image', 'Image'),
-        ('remote_image', 'Remote Image'),
-        ('custom_code', 'Custom Code'),
-        ], 'Type', required=True)
+    type = fields.Selection(_BLOCK_TYPES, 'Type', required=True)
     file = fields.Many2One('galatea.static.file', 'File', states={
             'required': Equal(Eval('type'), 'image'),
             'invisible': Not(Equal(Eval('type'), 'image'))
@@ -278,12 +291,57 @@ class Block(ModelSQL, ModelView):
             ], 'Visibility', required=True)
     css = fields.Char('CSS',
         help='Seperated styles by a space')
-    title = fields.Char('Title', translate=True)
-    paragraph1 = fields.Char('Paragraph 1', translate=True)
-    paragraph2 = fields.Char('Paragraph 2', translate=True)
-    paragraph3 = fields.Char('Paragraph 3', translate=True)
-    paragraph4 = fields.Char('Paragraph 4', translate=True)
-    paragraph5 = fields.Char('Paragraph 5', translate=True)
+    title = fields.Char('Title', translate=True,
+        states={
+            'required': Eval('type').in_(_BLOCK_TITLE_REQUIRED),
+            }, depends=['type'])
+    show_title = fields.Boolean('Show Title')
+    paragraph1 = fields.Text('Paragraph 1', translate=True)
+    paragraph2 = fields.Text('Paragraph 2', translate=True)
+    paragraph3 = fields.Text('Paragraph 3', translate=True)
+    paragraph4 = fields.Text('Paragraph 4', translate=True)
+    paragraph5 = fields.Text('Paragraph 5', translate=True)
+    markup = fields.Selection([
+            (None, ''),
+            ('wikimedia', 'WikiMedia'),
+            ('rest', 'ReStructuredText'),
+            ], 'Markup')
+    attachment_resource = fields.Function(fields.Char('Attachment Resource'),
+        'get_attachment_resource')
+    cover_image1 = fields.Many2One('ir.attachment', 'Cover Image 1',
+        domain=_BLOCK_COVER_IMAGE_DOMAIN,
+        states=_BLOCK_COVER_IMAGE_STATES,
+        context=_BLOCK_COVER_IMAGE_CONTEXT,
+        depends=_BLOCK_COVER_IMAGE_DEPENDS)
+    cover_image2 = fields.Many2One('ir.attachment', 'Cover Image 2',
+        domain=_BLOCK_COVER_IMAGE_DOMAIN,
+        states=_BLOCK_COVER_IMAGE_STATES,
+        context=_BLOCK_COVER_IMAGE_CONTEXT,
+        depends=_BLOCK_COVER_IMAGE_DEPENDS)
+    cover_image3 = fields.Many2One('ir.attachment', 'Cover Image 3',
+        domain=_BLOCK_COVER_IMAGE_DOMAIN,
+        states=_BLOCK_COVER_IMAGE_STATES,
+        context=_BLOCK_COVER_IMAGE_CONTEXT,
+        depends=_BLOCK_COVER_IMAGE_DEPENDS)
+    cover_image4 = fields.Many2One('ir.attachment', 'Cover Image 4',
+        domain=_BLOCK_COVER_IMAGE_DOMAIN,
+        states=_BLOCK_COVER_IMAGE_STATES,
+        context=_BLOCK_COVER_IMAGE_CONTEXT,
+        depends=_BLOCK_COVER_IMAGE_DEPENDS)
+    cover_image5 = fields.Many2One('ir.attachment', 'Cover Image 5',
+        domain=_BLOCK_COVER_IMAGE_DOMAIN,
+        states=_BLOCK_COVER_IMAGE_STATES,
+        context=_BLOCK_COVER_IMAGE_CONTEXT,
+        depends=_BLOCK_COVER_IMAGE_DEPENDS)
+    cover_image_align = fields.Selection([
+            (None, 'None'),
+            ('top','Top'),
+            ('bottom','Bottom'),
+            ('right','Right'),
+            ('left','Left'),
+            ], 'Cover Image Align')
+    total_cover_images = fields.Function(fields.Integer('Total Cover Images'),
+        'on_change_with_total_cover_images')
 
     @staticmethod
     def default_active():
@@ -297,10 +355,35 @@ class Block(ModelSQL, ModelView):
     def default_visibility():
         return 'public'
 
+    @staticmethod
+    def default_show_title():
+        return True
+
     @fields.depends('name', 'code')
     def on_change_name(self):
         if self.name and not self.code:
             self.code = slugify(self.name)
+
+    @fields.depends('cover_image1', 'cover_image2', 'cover_image3',
+        'cover_image4', 'cover_image5')
+    def on_change_with_total_cover_images(self, name=None):
+        total = 0
+        if self.cover_image1:
+            total += 1
+        if self.cover_image2:
+            total += 1
+        if self.cover_image3:
+            total += 1
+        if self.cover_image4:
+            total += 1
+        if self.cover_image5:
+            total += 1
+        return total
+
+    def get_attachment_resource(self, name):
+        if self.id:
+            return 'galatea.cms.block,%s' % self.id
+        return 'galatea.cms.block,-1'
 
 
 class Carousel(ModelSQL, ModelView):
