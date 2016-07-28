@@ -11,6 +11,15 @@ from trytond.modules.galatea.tools import slugify
 
 __all__ = ['Menu', 'Article', 'ArticleBlock', 'ArticleWebsite', 'Block',
     'Carousel', 'CarouselItem']
+_TITLE_STYLE = [
+    (None, ''),
+    ('h1', 'H1'),
+    ('h2', 'H2'),
+    ('h3', 'H3'),
+    ('h4', 'H4'),
+    ('h5', 'H5'),
+    ('h6', 'H6'),
+    ]
 _BLOCK_TYPES = [
     ('image', 'Image'),
     ('remote_image', 'Remote Image'),
@@ -173,6 +182,7 @@ class Article(GalateaVisiblePage, ModelSQL, ModelView):
     metatitle = fields.Char('Meta Title', translate=True)
     attachments = fields.One2Many('ir.attachment', 'resource', 'Attachments')
     blocks = fields.One2Many('galatea.cms.article.block', 'article', 'Blocks')
+    show_title = fields.Boolean('Show Title')
 
     @classmethod
     def __setup__(cls):
@@ -295,6 +305,7 @@ class Block(ModelSQL, ModelView):
         states={
             'required': Eval('type').in_(_BLOCK_TITLE_REQUIRED),
             }, depends=['type'])
+    title_headings = fields.Selection(_TITLE_STYLE, 'Title Headings')
     show_title = fields.Boolean('Show Title')
     paragraph1 = fields.Text('Paragraph 1', translate=True)
     paragraph2 = fields.Text('Paragraph 2', translate=True)
