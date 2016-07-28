@@ -13,7 +13,7 @@ this repository contains the full copyright notices and license terms. -->
     <label name="active"/>
     <field name="active"/>
     <notebook colspan="4">
-        <page string="Block" id="block">
+        <page string="CMS" id="cms">
             <label name="file"/>
             <field name="file"/>
             <label name="remote_image_url"/>
@@ -24,18 +24,12 @@ this repository contains the full copyright notices and license terms. -->
             <field name="width"/>
             <separator name="custom_code" colspan="4"/>
             <field name="custom_code" colspan="4"/>
-        </page>
-        <page string="Extra" id="extra">
-            <label name="visibility"/>
-            <field name="visibility"/>
-            <label name="css"/>
-            <field name="css"/>
-        </page>
-        <page string="CMS" id="cms">
             <label name="title"/>
             <field name="title"/>
             <label name="show_title"/>
             <field name="show_title"/>
+            <label name="title_headings"/>
+            <field name="title_headings"/>
             <label name="markup"/>
             <field name="markup"/>
             <separator name="paragraph1" colspan="4"/>
@@ -61,6 +55,12 @@ this repository contains the full copyright notices and license terms. -->
             <field name="cover_image4"/>
             <label name="cover_image5"/>
             <field name="cover_image5"/>
+        </page>
+        <page string="Extra" id="extra">
+            <label name="visibility"/>
+            <field name="visibility"/>
+            <label name="css"/>
+            <field name="css"/>
         </page>
         <page string="SEO" id="seo">
             <label name="alternative_text"/>
