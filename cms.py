@@ -90,6 +90,14 @@ class Menu(ModelSQL, ModelView):
         help='Icon name show in menu.')
     login = fields.Boolean('Login', help='Allow login users')
     manager = fields.Boolean('Manager', help='Allow manager users')
+    hidden_xs = fields.Boolean('Hidden XS',
+        help='Hidden Extra small devices')
+    hidden_sm = fields.Boolean('Hidden SM',
+        help='Hidden Small devices')
+    hidden_md = fields.Boolean('Hidden MD',
+        help='Hidden Medium devices')
+    hidden_lg = fields.Boolean('Hidden LG',
+        help='Hidden Large devices')
 
     @classmethod
     def __setup__(cls):
