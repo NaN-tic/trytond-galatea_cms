@@ -214,6 +214,10 @@ class Article(GalateaVisiblePage, ModelSQL, ModelView):
         websites = Website.search([('active', '=', True)])
         return [w.id for w in websites]
 
+    @staticmethod
+    def default_show_title():
+        return True
+
     @classmethod
     def calc_uri_vals(cls, record_vals):
         # TODO: calc parent and template?
