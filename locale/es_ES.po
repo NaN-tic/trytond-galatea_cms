@@ -514,11 +514,11 @@ msgstr "Nombre del icono a mostrar en el menú"
 
 msgctxt "help:galatea.cms.menu,login:"
 msgid "Allow login users"
-msgstr "Permite identifcación usuarios"
+msgstr "Permite usuario identificados"
 
 msgctxt "help:galatea.cms.menu,manager:"
 msgid "Allow manager users"
-msgstr "Permite gestión usuarios"
+msgstr "Permite usuarios gestores"
 
 msgctxt "help:galatea.cms.menu,nofollow:"
 msgid "Add attribute in links to not search engines continue"
