@@ -1,4 +1,4 @@
-# 
+#
 msgid ""
 msgstr "Content-Type: text/plain; charset=utf-8\n"
 
@@ -18,6 +18,14 @@ msgctxt "field:galatea.cms.article,attachments:"
 msgid "Attachments"
 msgstr "Adjuntos"
 
+msgctxt "field:galatea.cms.article,blocks:"
+msgid "Blocks"
+msgstr "Bloques"
+
+msgctxt "field:galatea.cms.article,canonical_uri:"
+msgid "Canonical URI"
+msgstr "Canonical URI"
+
 msgctxt "field:galatea.cms.article,create_date:"
 msgid "Create Date"
 msgstr "Fecha creación"
@@ -30,13 +38,13 @@ msgctxt "field:galatea.cms.article,description:"
 msgid "Description"
 msgstr "Descripción"
 
-msgctxt "field:galatea.cms.article,galatea_website:"
-msgid "Website"
-msgstr "Sitio web"
-
 msgctxt "field:galatea.cms.article,id:"
 msgid "ID"
 msgstr "ID"
+
+msgctxt "field:galatea.cms.article,markup:"
+msgid "Markup"
+msgstr "Markup"
 
 msgctxt "field:galatea.cms.article,metadescription:"
 msgid "Meta Description"
@@ -62,31 +70,99 @@ msgctxt "field:galatea.cms.article,slug:"
 msgid "Slug"
 msgstr "Slug"
 
-msgctxt "field:galatea.cms.article,slug_langs:"
-msgid "Slug Langs"
-msgstr "Slug idiomas"
-
 msgctxt "field:galatea.cms.article,template:"
 msgid "Template"
 msgstr "Plantilla"
 
 msgctxt "field:galatea.cms.article,uri:"
-msgid "Uri"
+msgid "URI"
 msgstr "Uri"
+
+msgctxt "field:galatea.cms.article,uris:"
+msgid "URIs"
+msgstr "URIs"
 
 msgctxt "field:galatea.cms.article,visibility:"
 msgid "Visibility"
 msgstr "Visibilidad"
 
-msgctxt "field:galatea.cms.article,wikimarkup:"
-msgid "WikiMarkup"
-msgstr "WikiMarkup"
+msgctxt "field:galatea.cms.article,websites:"
+msgid "Websites"
+msgstr "Sitios web"
 
 msgctxt "field:galatea.cms.article,write_date:"
 msgid "Write Date"
 msgstr "Fecha modificación"
 
 msgctxt "field:galatea.cms.article,write_uid:"
+msgid "Write User"
+msgstr "Usuario modificación"
+
+msgctxt "field:galatea.cms.article-galatea.website,article:"
+msgid "Article"
+msgstr "Artículo"
+
+msgctxt "field:galatea.cms.article-galatea.website,create_date:"
+msgid "Create Date"
+msgstr "Fecha creación"
+
+msgctxt "field:galatea.cms.article-galatea.website,create_uid:"
+msgid "Create User"
+msgstr "Usuario creación"
+
+msgctxt "field:galatea.cms.article-galatea.website,id:"
+msgid "ID"
+msgstr "ID"
+
+msgctxt "field:galatea.cms.article-galatea.website,rec_name:"
+msgid "Name"
+msgstr "Nombre"
+
+msgctxt "field:galatea.cms.article-galatea.website,website:"
+msgid "Website"
+msgstr "Sitio Web"
+
+msgctxt "field:galatea.cms.article-galatea.website,write_date:"
+msgid "Write Date"
+msgstr "Fecha modificación"
+
+msgctxt "field:galatea.cms.article-galatea.website,write_uid:"
+msgid "Write User"
+msgstr "Usuario modificación"
+
+msgctxt "field:galatea.cms.article.block,article:"
+msgid "Article"
+msgstr "Artículo"
+
+msgctxt "field:galatea.cms.article.block,block:"
+msgid "Block"
+msgstr "Bloque"
+
+msgctxt "field:galatea.cms.article.block,create_date:"
+msgid "Create Date"
+msgstr "Fecha creación"
+
+msgctxt "field:galatea.cms.article.block,create_uid:"
+msgid "Create User"
+msgstr "Usuario creación"
+
+msgctxt "field:galatea.cms.article.block,id:"
+msgid "ID"
+msgstr "ID"
+
+msgctxt "field:galatea.cms.article.block,rec_name:"
+msgid "Name"
+msgstr "Nombre"
+
+msgctxt "field:galatea.cms.article.block,sequence:"
+msgid "Sequence"
+msgstr "Secuencia"
+
+msgctxt "field:galatea.cms.article.block,write_date:"
+msgid "Write Date"
+msgstr "Usuario creación"
+
+msgctxt "field:galatea.cms.article.block,write_uid:"
 msgid "Write User"
 msgstr "Usuario modificación"
 
@@ -304,13 +380,21 @@ msgstr "Izquieda"
 
 msgctxt "field:galatea.cms.menu,login:"
 msgid "Login"
-msgstr "Identificado"
+msgstr "Identificador"
 
 msgctxt "field:galatea.cms.menu,manager:"
 msgid "Manager"
 msgstr "Gestor"
 
 msgctxt "field:galatea.cms.menu,name:"
+msgid "Name"
+msgstr "Nombre"
+
+msgctxt "field:galatea.cms.menu,name_uri:"
+msgid "Use URI's name"
+msgstr "Utilizar nombre URI's"
+
+msgctxt "field:galatea.cms.menu,name_used:"
 msgid "Name"
 msgstr "Nombre"
 
@@ -334,9 +418,25 @@ msgctxt "field:galatea.cms.menu,sequence:"
 msgid "Sequence"
 msgstr "Secuencia"
 
-msgctxt "field:galatea.cms.menu,slug:"
-msgid "Slug"
-msgstr "Slug"
+msgctxt "field:galatea.cms.menu,target_type:"
+msgid "Type"
+msgstr "Tipo"
+
+msgctxt "field:galatea.cms.menu,target_uri:"
+msgid "Target URI"
+msgstr "Target URI"
+
+msgctxt "field:galatea.cms.menu,target_url:"
+msgid "Target URL"
+msgstr "Target URL"
+
+msgctxt "field:galatea.cms.menu,url:"
+msgid "URL"
+msgstr "URL"
+
+msgctxt "field:galatea.cms.menu,website:"
+msgid "Website"
+msgstr "Sitio Web"
 
 msgctxt "field:galatea.cms.menu,write_date:"
 msgid "Write Date"
@@ -347,17 +447,13 @@ msgid "Write User"
 msgstr "Usuario modificación"
 
 msgctxt "help:galatea.cms.article,active:"
-msgid "Dissable to not show content article."
+msgid "Dissable to not show this content."
 msgstr "Desactivar para no mostrar el contenido del artículo."
 
+#, fuzzy
 msgctxt "help:galatea.cms.article,description:"
-msgid ""
-"You could write wiki markup to create html content. Formats text following "
-"the MediaWiki (http://meta.wikimedia.org/wiki/Help:Editing) syntax."
-msgstr ""
-"Puede escribir etiquetas wiki para el formateo del texto. Para la chuleta de"
-" las etiquetas puede consultar a MediaWiki "
-"(http://meta.wikimedia.org/wiki/Help:Editing)."
+msgid "You could write wiki or RST markups to create html content."
+msgstr "Puede escribir etiquetas wiki o RST para el formateo del texto."
 
 msgctxt "help:galatea.cms.article,metadescription:"
 msgid ""
@@ -371,26 +467,14 @@ msgctxt "help:galatea.cms.article,metakeywords:"
 msgid "Separated by comma"
 msgstr "Separado con la coma"
 
-msgctxt "help:galatea.cms.article,slug:"
-msgid "Cannonical uri."
-msgstr "Cannonical uri."
-
-msgctxt "help:galatea.cms.article,wikimarkup:"
-msgid "Article use wiki markups"
-msgstr "El artículo usa wiki markups"
-
 msgctxt "help:galatea.cms.block,code:"
 msgid "Internal code."
 msgstr "Código interno."
 
+#, fuzzy
 msgctxt "help:galatea.cms.block,custom_code:"
-msgid ""
-"You could write wiki markup to create html content. Formats text following "
-"the MediaWiki (http://meta.wikimedia.org/wiki/Help:Editing) syntax."
-msgstr ""
-"Puede escribir etiquetas wiki para el formateo del texto. Para la chuleta de"
-" las etiquetas puede consultar a MediaWiki "
-"(http://meta.wikimedia.org/wiki/Help:Editing)."
+msgid "You could write wiki or RST markups to create html content."
+msgstr "Puede escribir etiquetas wiki o RST para el formateo del texto."
 
 msgctxt "help:galatea.cms.carousel,code:"
 msgid "Internal code. Use characters az09"
@@ -430,24 +514,28 @@ msgstr "Nombre del icono a mostrar en el menú"
 
 msgctxt "help:galatea.cms.menu,login:"
 msgid "Allow login users"
-msgstr "Permite identifcación usuarios"
+msgstr "Permite usuario identificados"
 
 msgctxt "help:galatea.cms.menu,manager:"
 msgid "Allow manager users"
-msgstr "Permite gestión usuarios"
+msgstr "Permite usuarios gestores"
 
 msgctxt "help:galatea.cms.menu,nofollow:"
 msgid "Add attribute in links to not search engines continue"
 msgstr ""
 "Añade un atributo en los vínculos para que los buscadores no continúen"
 
-msgctxt "help:galatea.cms.menu,slug:"
-msgid "Cannonical uri."
-msgstr "Cannonical uri."
-
 msgctxt "model:galatea.cms.article,name:"
 msgid "Article CMS"
 msgstr "Artículo CMS"
+
+msgctxt "model:galatea.cms.article-galatea.website,name:"
+msgid "Galatea CMS Article - Website"
+msgstr "Artículo Galatea CMS - Sitio web"
+
+msgctxt "model:galatea.cms.article.block,name:"
+msgid "Article Block CMS"
+msgstr "CMS Artículo Bloque"
 
 msgctxt "model:galatea.cms.block,name:"
 msgid "Block CMS"
@@ -513,6 +601,18 @@ msgctxt "model:res.group,name:group_galatea_cms"
 msgid "Galatea CMS"
 msgstr "Galatea CMS"
 
+msgctxt "selection:galatea.cms.article,markup:"
+msgid ""
+msgstr ""
+
+msgctxt "selection:galatea.cms.article,markup:"
+msgid "ReStructuredText"
+msgstr "ReStructuredText"
+
+msgctxt "selection:galatea.cms.article,markup:"
+msgid "WikiMedia"
+msgstr "WikiMedia"
+
 msgctxt "selection:galatea.cms.article,visibility:"
 msgid "Manager"
 msgstr "Gestor"
@@ -549,6 +649,22 @@ msgctxt "selection:galatea.cms.block,visibility:"
 msgid "Register"
 msgstr "Registrado"
 
+msgctxt "selection:galatea.cms.menu,target_type:"
+msgid "External URL"
+msgstr "URL externa"
+
+msgctxt "selection:galatea.cms.menu,target_type:"
+msgid "Internal URI"
+msgstr "URI interna"
+
+msgctxt "view:galatea.cms.article.block:"
+msgid "Article Block"
+msgstr "Bloque artículo"
+
+msgctxt "view:galatea.cms.article.block:"
+msgid "Article Blocks"
+msgstr "Bloque artículo"
+
 msgctxt "view:galatea.cms.article:"
 msgid "Article"
 msgstr "Artículo"
@@ -556,10 +672,6 @@ msgstr "Artículo"
 msgctxt "view:galatea.cms.article:"
 msgid "Articles"
 msgstr "Artículos"
-
-msgctxt "view:galatea.cms.article:"
-msgid "Attachments"
-msgstr "Adjuntos"
 
 msgctxt "view:galatea.cms.article:"
 msgid "Descriptions"

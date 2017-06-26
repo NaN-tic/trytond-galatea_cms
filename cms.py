@@ -4,14 +4,41 @@
 from trytond.model import ModelSQL, ModelView, fields
 from trytond.pool import Pool
 from trytond.pyson import Bool, Equal, Eval, In, Not
-from trytond.transaction import Transaction
 from trytond import backend
+from trytond.transaction import Transaction
 
 from trytond.modules.galatea import GalateaVisiblePage
 from trytond.modules.galatea.tools import slugify
 
-__all__ = ['Menu', 'Article', 'ArticleWebsite', 'Block',
+__all__ = ['Menu', 'Article', 'ArticleBlock', 'ArticleWebsite', 'Block',
     'Carousel', 'CarouselItem']
+
+_TITLE_STYLE = [
+    (None, ''),
+    ('h1', 'H1'),
+    ('h2', 'H2'),
+    ('h3', 'H3'),
+    ('h4', 'H4'),
+    ('h5', 'H5'),
+    ('h6', 'H6'),
+    ]
+_BLOCK_TYPES = [
+    ('image', 'Image'),
+    ('remote_image', 'Remote Image'),
+    ('custom_code', 'Custom Code'),
+    ('section_description', 'Section Description'),
+    ]
+_BLOCK_COVER_IMAGE_DOMAIN = [
+        ('resource', '=', Eval('attachment_resource')),
+    ]
+_BLOCK_COVER_IMAGE_STATES = {
+        'readonly': Eval('id', 0) <= 0,
+    }
+_BLOCK_COVER_IMAGE_CONTEXT = {
+        'resource': Eval('attachment_resource'),
+    }
+_BLOCK_COVER_IMAGE_DEPENDS =['attachment_resource']
+_BLOCK_TITLE_REQUIRED = ['section_description']
 
 
 class Menu(ModelSQL, ModelView):
@@ -65,6 +92,14 @@ class Menu(ModelSQL, ModelView):
         help='Icon name show in menu.')
     login = fields.Boolean('Login', help='Allow login users')
     manager = fields.Boolean('Manager', help='Allow manager users')
+    hidden_xs = fields.Boolean('Hidden XS',
+        help='Hidden Extra small devices')
+    hidden_sm = fields.Boolean('Hidden SM',
+        help='Hidden Small devices')
+    hidden_md = fields.Boolean('Hidden MD',
+        help='Hidden Medium devices')
+    hidden_lg = fields.Boolean('Hidden LG',
+        help='Hidden Large devices')
 
     @classmethod
     def __setup__(cls):
@@ -92,6 +127,13 @@ class Menu(ModelSQL, ModelView):
     def get_url(self, name):
         return (self.target_url if self.target_type == 'external_url'
             else (self.target_uri.uri if self.target_uri else '#'))
+
+    @classmethod
+    def default_website(cls):
+        Website = Pool().get('galatea.website')
+        websites = Website.search([])
+        if len(websites) == 1:
+            return websites[0].id
 
     @staticmethod
     def default_left():
@@ -135,10 +177,8 @@ class Article(GalateaVisiblePage, ModelSQL, ModelView):
     __name__ = 'galatea.cms.article'
     websites = fields.Many2Many('galatea.cms.article-galatea.website',
         'article', 'website', 'Websites', required=True)
-    description = fields.Text('Description', required=True, translate=True,
-        help='You could write wiki markup to create html content. Formats '
-        'text following the MediaWiki '
-        '(http://meta.wikimedia.org/wiki/Help:Editing) syntax.')
+    description = fields.Text('Description', translate=True,
+        help='You could write wiki or RST markups to create html content.')
     markup = fields.Selection([
             (None, ''),
             ('wikimedia', 'WikiMedia'),
@@ -151,6 +191,8 @@ class Article(GalateaVisiblePage, ModelSQL, ModelView):
         help='Separated by comma')
     metatitle = fields.Char('Meta Title', translate=True)
     attachments = fields.One2Many('ir.attachment', 'resource', 'Attachments')
+    blocks = fields.One2Many('galatea.cms.article.block', 'article', 'Blocks')
+    show_title = fields.Boolean('Show Title')
 
     @classmethod
     def __setup__(cls):
@@ -174,7 +216,6 @@ class Article(GalateaVisiblePage, ModelSQL, ModelView):
 
         super(Article, cls).__register__(module_name)
 
-        table = TableHandler(cursor, cls, module_name)
         table.not_null_action('galatea_website', action='remove')
         table.not_null_action('template', action='remove')
 
@@ -183,6 +224,10 @@ class Article(GalateaVisiblePage, ModelSQL, ModelView):
         Website = Pool().get('galatea.website')
         websites = Website.search([('active', '=', True)])
         return [w.id for w in websites]
+
+    @staticmethod
+    def default_show_title():
+        return True
 
     @classmethod
     def calc_uri_vals(cls, record_vals):
@@ -196,6 +241,25 @@ class Article(GalateaVisiblePage, ModelSQL, ModelView):
     def delete(cls, articles):
         cls.raise_user_warning('delete_articles', 'delete_articles')
         super(Article, cls).delete(articles)
+
+
+class ArticleBlock(ModelSQL, ModelView):
+    "Article Block CMS"
+    __name__ = 'galatea.cms.article.block'
+    article = fields.Many2One('galatea.cms.article', 'Article',
+        required=True)
+    block = fields.Many2One('galatea.cms.block', 'Block',
+        required=True)
+    sequence = fields.Integer('Sequence')
+
+    @staticmethod
+    def default_sequence():
+        return 1
+
+    @classmethod
+    def __setup__(cls):
+        super(ArticleBlock, cls).__setup__()
+        cls._order.insert(0, ('sequence', 'ASC'))
 
 
 class ArticleWebsite(ModelSQL):
@@ -212,11 +276,7 @@ class Block(ModelSQL, ModelView):
     __name__ = 'galatea.cms.block'
     name = fields.Char('Name', required=True)
     code = fields.Char('Code', required=True, help='Internal code.')
-    type = fields.Selection([
-        ('image', 'Image'),
-        ('remote_image', 'Remote Image'),
-        ('custom_code', 'Custom Code'),
-        ], 'Type', required=True)
+    type = fields.Selection(_BLOCK_TYPES, 'Type', required=True)
     file = fields.Many2One('galatea.static.file', 'File', states={
             'required': Equal(Eval('type'), 'image'),
             'invisible': Not(Equal(Eval('type'), 'image'))
@@ -230,8 +290,7 @@ class Block(ModelSQL, ModelView):
             'required': Equal(Eval('type'), 'custom_code'),
             'invisible': Not(Equal(Eval('type'), 'custom_code'))
             },
-        help='You could write wiki markup to create html content. Formats text following '
-        'the MediaWiki (http://meta.wikimedia.org/wiki/Help:Editing) syntax.')
+        help='You could write wiki or RST markups to create html content.')
     height = fields.Integer('Height',
         states = {
             'invisible': Not(In(Eval('type'), ['image', 'remote_image']))
@@ -255,25 +314,102 @@ class Block(ModelSQL, ModelView):
             ('register','Register'),
             ('manager','Manager'),
             ], 'Visibility', required=True)
+    css = fields.Char('CSS',
+        help='Seperated styles by a space')
+    title = fields.Char('Title', translate=True,
+        states={
+            'required': Eval('type').in_(_BLOCK_TITLE_REQUIRED),
+            }, depends=['type'])
+    title_headings = fields.Selection(_TITLE_STYLE, 'Title Headings')
+    show_title = fields.Boolean('Show Title')
+    paragraph1 = fields.Text('Paragraph 1', translate=True)
+    paragraph2 = fields.Text('Paragraph 2', translate=True)
+    paragraph3 = fields.Text('Paragraph 3', translate=True)
+    paragraph4 = fields.Text('Paragraph 4', translate=True)
+    paragraph5 = fields.Text('Paragraph 5', translate=True)
+    markup = fields.Selection([
+            (None, ''),
+            ('wikimedia', 'WikiMedia'),
+            ('rest', 'ReStructuredText'),
+            ], 'Markup')
+    attachment_resource = fields.Function(fields.Char('Attachment Resource'),
+        'get_attachment_resource')
+    cover_image1 = fields.Many2One('ir.attachment', 'Cover Image 1',
+        domain=_BLOCK_COVER_IMAGE_DOMAIN,
+        states=_BLOCK_COVER_IMAGE_STATES,
+        context=_BLOCK_COVER_IMAGE_CONTEXT,
+        depends=_BLOCK_COVER_IMAGE_DEPENDS)
+    cover_image2 = fields.Many2One('ir.attachment', 'Cover Image 2',
+        domain=_BLOCK_COVER_IMAGE_DOMAIN,
+        states=_BLOCK_COVER_IMAGE_STATES,
+        context=_BLOCK_COVER_IMAGE_CONTEXT,
+        depends=_BLOCK_COVER_IMAGE_DEPENDS)
+    cover_image3 = fields.Many2One('ir.attachment', 'Cover Image 3',
+        domain=_BLOCK_COVER_IMAGE_DOMAIN,
+        states=_BLOCK_COVER_IMAGE_STATES,
+        context=_BLOCK_COVER_IMAGE_CONTEXT,
+        depends=_BLOCK_COVER_IMAGE_DEPENDS)
+    cover_image4 = fields.Many2One('ir.attachment', 'Cover Image 4',
+        domain=_BLOCK_COVER_IMAGE_DOMAIN,
+        states=_BLOCK_COVER_IMAGE_STATES,
+        context=_BLOCK_COVER_IMAGE_CONTEXT,
+        depends=_BLOCK_COVER_IMAGE_DEPENDS)
+    cover_image5 = fields.Many2One('ir.attachment', 'Cover Image 5',
+        domain=_BLOCK_COVER_IMAGE_DOMAIN,
+        states=_BLOCK_COVER_IMAGE_STATES,
+        context=_BLOCK_COVER_IMAGE_CONTEXT,
+        depends=_BLOCK_COVER_IMAGE_DEPENDS)
+    cover_image_align = fields.Selection([
+            (None, 'None'),
+            ('top','Top'),
+            ('bottom','Bottom'),
+            ('right','Right'),
+            ('left','Left'),
+            ], 'Cover Image Align')
+    total_cover_images = fields.Function(fields.Integer('Total Cover Images'),
+        'on_change_with_total_cover_images')
 
     @staticmethod
     def default_active():
-        'Return True'
         return True
 
     @staticmethod
     def default_type():
-        'Return Image'
-        return 'image'
+        return 'custom_code'
 
     @staticmethod
     def default_visibility():
         return 'public'
 
+    @staticmethod
+    def default_show_title():
+        return True
+
     @fields.depends('name', 'code')
     def on_change_name(self):
         if self.name and not self.code:
             self.code = slugify(self.name)
+
+    @fields.depends('cover_image1', 'cover_image2', 'cover_image3',
+        'cover_image4', 'cover_image5')
+    def on_change_with_total_cover_images(self, name=None):
+        total = 0
+        if self.cover_image1:
+            total += 1
+        if self.cover_image2:
+            total += 1
+        if self.cover_image3:
+            total += 1
+        if self.cover_image4:
+            total += 1
+        if self.cover_image5:
+            total += 1
+        return total
+
+    def get_attachment_resource(self, name):
+        if self.id:
+            return 'galatea.cms.block,%s' % self.id
+        return 'galatea.cms.block,-1'
 
 
 class Carousel(ModelSQL, ModelView):

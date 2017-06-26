@@ -30,10 +30,15 @@ this repository contains the full copyright notices and license terms. -->
         <page string="Extra" id="extra">
             <label name="visibility"/>
             <field name="visibility"/>
+            <label name="show_title"/>
+            <field name="show_title"/>
             <separator name="websites" colspan="4"/>
             <field name="websites" colspan="4"/>
             <separator name="uris" colspan="4"/>
             <field name="uris" colspan="4"/>
+        </page>
+        <page string="Blocks" id="blocks">
+            <field name="blocks"/>
         </page>
         <page string="Attachments" id="attachments">
             <field name="attachments"/>
