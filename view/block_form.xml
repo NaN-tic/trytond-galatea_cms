@@ -42,7 +42,7 @@ this repository contains the full copyright notices and license terms. -->
             <field name="paragraph4" colspan="4"/>
             <separator name="paragraph5" colspan="4"/>
             <field name="paragraph5" colspan="4"/>
-            <separator string="Cover Images" colspan="4"/>
+            <separator id="cover_images" string="Cover Images" colspan="4"/>
             <label name="cover_image_align"/>
             <field name="cover_image_align"/>
             <label name="cover_image1"/>
