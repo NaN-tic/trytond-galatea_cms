@@ -11,6 +11,7 @@ from trytond.modules.galatea.tools import slugify
 
 __all__ = ['Menu', 'Article', 'ArticleBlock', 'ArticleWebsite', 'Block',
     'Carousel', 'CarouselItem']
+
 _TITLE_STYLE = [
     (None, ''),
     ('h1', 'H1'),
