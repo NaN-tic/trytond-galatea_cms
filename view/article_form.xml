@@ -37,10 +37,10 @@ this repository contains the full copyright notices and license terms. -->
             <separator name="uris" colspan="4"/>
             <field name="uris" colspan="4"/>
         </page>
-        <page name="blocks" id="blocks">
+        <page id="blocks">
             <field name="blocks"/>
         </page>
-        <page name="attachments" id="attachments">
+        <page id="attachments">
             <field name="attachments"/>
         </page>
     </notebook>
