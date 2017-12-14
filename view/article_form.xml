@@ -40,7 +40,7 @@ this repository contains the full copyright notices and license terms. -->
         <page name="blocks">
             <field name="blocks"/>
         </page>
-        <page name="attachments" id="attachments">
+        <page name="attachments">
             <field name="attachments"/>
         </page>
     </notebook>
