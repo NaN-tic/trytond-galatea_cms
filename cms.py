@@ -6,7 +6,7 @@ from trytond.pool import Pool
 from trytond.pyson import Bool, Equal, Eval, In, Not
 from trytond import backend
 
-from trytond.modules.galatea import GalateaVisiblePage
+from trytond.modules.galatea.resource import GalateaVisiblePage
 from trytond.modules.galatea.tools import slugify
 
 __all__ = ['Menu', 'Article', 'ArticleBlock', 'ArticleWebsite', 'Block',
@@ -28,15 +28,15 @@ _BLOCK_TYPES = [
     ('section_description', 'Section Description'),
     ]
 _BLOCK_COVER_IMAGE_DOMAIN = [
-        ('resource', '=', Eval('attachment_resource')),
+    ('resource', '=', Eval('attachment_resource')),
     ]
 _BLOCK_COVER_IMAGE_STATES = {
-        'readonly': Eval('id', 0) <= 0,
+    'readonly': Eval('id', 0) <= 0,
     }
 _BLOCK_COVER_IMAGE_CONTEXT = {
-        'resource': Eval('attachment_resource'),
+    'resource': Eval('attachment_resource'),
     }
-_BLOCK_COVER_IMAGE_DEPENDS =['attachment_resource']
+_BLOCK_COVER_IMAGE_DEPENDS = ['attachment_resource']
 _BLOCK_TITLE_REQUIRED = ['section_description']
 
 
@@ -171,9 +171,10 @@ class Menu(ModelSQL, ModelView):
         return super(Menu, cls).copy(menus, default=default)
 
 
-class Article(GalateaVisiblePage, ModelSQL, ModelView):
+class Article(GalateaVisiblePage):
     "Article CMS"
     __name__ = 'galatea.cms.article'
+    _table = None  # Needed to reset GalateaVisiblePage._table
     websites = fields.Many2Many('galatea.cms.article-galatea.website',
         'article', 'website', 'Websites', required=True)
     description = fields.Text('Description', translate=True,
@@ -290,27 +291,27 @@ class Block(ModelSQL, ModelView):
             },
         help='You could write wiki or RST markups to create html content.')
     height = fields.Integer('Height',
-        states = {
+        states={
             'invisible': Not(In(Eval('type'), ['image', 'remote_image']))
             })
     width = fields.Integer('Width',
-        states = {
+        states={
             'invisible': Not(In(Eval('type'), ['image', 'remote_image']))
             })
     alternative_text = fields.Char('Alternative Text',
-        states = {
+        states={
             'invisible': Not(In(Eval('type'), ['image', 'remote_image']))
             })
     click_url = fields.Char('Click URL', translate=True,
-        states = {
+        states={
             'invisible': Not(In(Eval('type'), ['image', 'remote_image']))
             })
     active = fields.Boolean('Active', select=True)
     attachments = fields.One2Many('ir.attachment', 'resource', 'Attachments')
     visibility = fields.Selection([
-            ('public','Public'),
-            ('register','Register'),
-            ('manager','Manager'),
+            ('public', 'Public'),
+            ('register', 'Register'),
+            ('manager', 'Manager'),
             ], 'Visibility', required=True)
     css = fields.Char('CSS',
         help='Seperated styles by a space')
@@ -359,10 +360,10 @@ class Block(ModelSQL, ModelView):
         depends=_BLOCK_COVER_IMAGE_DEPENDS)
     cover_image_align = fields.Selection([
             (None, 'None'),
-            ('top','Top'),
-            ('bottom','Bottom'),
-            ('right','Right'),
-            ('left','Left'),
+            ('top', 'Top'),
+            ('bottom', 'Bottom'),
+            ('right', 'Right'),
+            ('left', 'Left'),
             ], 'Cover Image Align')
     total_cover_images = fields.Function(fields.Integer('Total Cover Images'),
         'on_change_with_total_cover_images')
@@ -423,6 +424,7 @@ class Carousel(ModelSQL, ModelView):
     def default_active():
         return True
 
+    @fields.depends('name', 'code')
     def on_change_name(self):
         if self.name and not self.code:
             self.code = slugify(self.name)
@@ -431,7 +433,8 @@ class Carousel(ModelSQL, ModelView):
 class CarouselItem(ModelSQL, ModelView):
     "Carousel Item CMS"
     __name__ = 'galatea.cms.carousel.item'
-    carousel = fields.Many2One("galatea.cms.carousel", "Carousel", required=True)
+    carousel = fields.Many2One(
+        'galatea.cms.carousel', "Carousel", required=True)
     name = fields.Char('Label', translate=True, required=True)
     link = fields.Char('Link', translate=True,
         help='URL absolute')

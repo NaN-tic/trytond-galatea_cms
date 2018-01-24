@@ -4,6 +4,7 @@
 from trytond.pool import Pool
 from . import cms
 
+
 def register():
     Pool.register(
         cms.Menu,

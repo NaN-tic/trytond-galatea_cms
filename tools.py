@@ -2,6 +2,7 @@
 # The COPYRIGHT file at the top level of this repository contains
 # the full copyright notices and license terms.
 
+
 def seo_lenght(string):
     '''Get first 155 characters from string'''
     if len(string) > 155:
