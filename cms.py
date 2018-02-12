@@ -6,7 +6,7 @@ from trytond.pool import Pool
 from trytond.pyson import Bool, Equal, Eval, In, Not
 from trytond import backend
 
-from trytond.modules.galatea import GalateaVisiblePage
+from trytond.modules.galatea.resource import GalateaVisiblePage
 from trytond.modules.galatea.tools import slugify
 
 __all__ = ['Menu', 'Article', 'ArticleBlock', 'ArticleWebsite', 'Block',
