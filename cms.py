@@ -8,6 +8,7 @@ from trytond import backend
 
 from trytond.modules.galatea.resource import GalateaVisiblePage
 from trytond.modules.galatea.tools import slugify
+from trytond.transaction import Transaction
 
 __all__ = ['Menu', 'Article', 'ArticleBlock', 'ArticleWebsite', 'Block',
     'Carousel', 'CarouselItem']
@@ -240,6 +241,21 @@ class Article(GalateaVisiblePage):
     def delete(cls, articles):
         cls.raise_user_warning('delete_articles', 'delete_articles')
         super(Article, cls).delete(articles)
+
+    @property
+    def slug_langs(self):
+        '''Return dict slugs by llanguage'''
+        pool = Pool()
+        Lang = pool.get('ir.lang')
+        langs = Lang.search([
+            ('active', '=', True),
+            ('translatable', '=', True),
+            ])
+        slugs = {}
+        for lang in langs:
+            with Transaction().set_context(language=lang.code):
+                slugs[lang.code] = self.__class__(self.id).slug
+        return slugs
 
 
 class ArticleBlock(ModelSQL, ModelView):
