@@ -5,10 +5,11 @@ from trytond.model import ModelSQL, ModelView, fields
 from trytond.pool import Pool
 from trytond.pyson import Bool, Equal, Eval, In, Not
 from trytond import backend
-
+from trytond.i18n import gettext
 from trytond.modules.galatea.resource import GalateaVisiblePage
 from trytond.modules.galatea.tools import slugify
 from trytond.transaction import Transaction
+from .exceptions import DeleteWarning
 
 __all__ = ['Menu', 'Article', 'ArticleBlock', 'ArticleWebsite', 'Block',
     'Carousel', 'CarouselItem']
@@ -203,12 +204,6 @@ class Article(GalateaVisiblePage):
         if domain_clause not in cls.template.domain:
             cls.template.domain.append(domain_clause)
 
-        cls._error_messages.update({
-            'delete_articles': ('You can not delete '
-                'articles because you will get error 404 NOT Found. '
-                'Dissable active field.'),
-            })
-
     @classmethod
     def __register__(cls, module_name):
         TableHandler = backend.get('TableHandler')
@@ -239,7 +234,8 @@ class Article(GalateaVisiblePage):
 
     @classmethod
     def delete(cls, articles):
-        cls.raise_user_warning('delete_articles', 'delete_articles')
+        raise DeleteWarning('delete_articles',
+            gettext('galatea_cms.msg_delete_articles'))
         super(Article, cls).delete(articles)
 
     @property
