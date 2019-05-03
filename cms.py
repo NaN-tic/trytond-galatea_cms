@@ -1,7 +1,7 @@
 # This file is part galatea_cms module for Tryton.
 # The COPYRIGHT file at the top level of this repository contains
 # the full copyright notices and license terms.
-from trytond.model import ModelSQL, ModelView, fields
+from trytond.model import ModelSQL, ModelView, fields, tree
 from trytond.pool import Pool
 from trytond.pyson import Bool, Equal, Eval, In, Not
 from trytond import backend
@@ -42,7 +42,7 @@ _BLOCK_COVER_IMAGE_DEPENDS = ['attachment_resource']
 _BLOCK_TITLE_REQUIRED = ['section_description']
 
 
-class Menu(ModelSQL, ModelView):
+class Menu(tree(), ModelSQL, ModelView):
     "Menu CMS"
     __name__ = 'galatea.cms.menu'
     _rec_name = 'name_used'
@@ -151,11 +151,6 @@ class Menu(ModelSQL, ModelView):
     @staticmethod
     def default_active():
         return True
-
-    @classmethod
-    def validate(cls, menus):
-        super(Menu, cls).validate(menus)
-        cls.check_recursion(menus)
 
     @classmethod
     def copy(cls, menus, default=None):
