@@ -30,6 +30,10 @@ msgctxt "field:galatea.cms.article,description:"
 msgid "Description"
 msgstr "Descripció"
 
+msgctxt "field:galatea.cms.article,description_html:"
+msgid "Description HTML"
+msgstr "Descripció HTML"
+
 msgctxt "field:galatea.cms.article,id:"
 msgid "ID"
 msgstr "ID"
