@@ -176,6 +176,8 @@ class Article(GalateaVisiblePage):
         'article', 'website', 'Websites', required=True)
     description = fields.Text('Description', translate=True,
         help='You could write wiki or RST markups to create html content.')
+    description_html = fields.Function(fields.Text('Description HTML'),
+        'on_change_with_description_html')
     markup = fields.Selection([
             (None, ''),
             ('wikimedia', 'WikiMedia'),
@@ -210,6 +212,17 @@ class Article(GalateaVisiblePage):
         table.not_null_action('template', action='remove')
 
     @classmethod
+    def view_attributes(cls):
+        return super(Article, cls).view_attributes() + [
+            ('//page[@id="descriptions"]/group[@id="description_html"]', 'states', {
+                    'invisible': Eval('markup'),
+                    }),
+            ('//page[@id="descriptions"]/group[@id="description"]', 'states', {
+                    'invisible': ~Eval('markup'),
+                    }),
+            ]
+
+    @classmethod
     def default_websites(cls):
         Website = Pool().get('galatea.website')
         websites = Website.search([('active', '=', True)])
@@ -218,6 +231,11 @@ class Article(GalateaVisiblePage):
     @staticmethod
     def default_show_title():
         return True
+
+    @fields.depends('description')
+    def on_change_with_description_html(self, name=None):
+        if self.description:
+            return self.description
 
     @classmethod
     def calc_uri_vals(cls, record_vals):

@@ -14,10 +14,16 @@ this repository contains the full copyright notices and license terms. -->
     <field name="template"/>
     <notebook colspan="6">
         <page string="Descriptions" id="descriptions">
-            <field name="description" colspan="4"/>
+            <group id="description_html" colspan="4">
+              <field name="description" colspan="4" widget="html"/>
+              <field name="description_html" widget="richtext" toolbar="0" yexpand="1" yfill="1" colspan="4"/>
+            </group>
+            <group id="description" colspan="4">
+              <field name="description" colspan="4"/>
+            </group>
             <newline/>
             <label name="markup"/>
-            <field name="markup"/>
+            <field name="markup" xexpand="1"/>
         </page>
         <page string="SEO" id="seo">
             <label name="metadescription"/>
