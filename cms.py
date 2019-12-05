@@ -101,6 +101,10 @@ class Menu(tree(), ModelSQL, ModelView):
         help='Hidden Medium devices')
     hidden_lg = fields.Boolean('Hidden LG',
         help='Hidden Large devices')
+    image = fields.Many2One('ir.attachment', 'Image',
+        domain=[
+            ('resource.id', '=', Eval('id'), 'galatea.cms.menu')
+            ])
 
     @classmethod
     def __setup__(cls):
