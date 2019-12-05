@@ -38,6 +38,8 @@ this repository contains the full copyright notices and license terms. -->
             <field name="manager"/>
             <label name="nofollow"/>
             <field name="nofollow"/>
+            <label name="image"/>
+            <field name="image"/>
         </page>
         <page string="Responsive" id="responsive">
             <group col="10" colspan="6" id="hidden">
