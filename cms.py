@@ -104,7 +104,7 @@ class Menu(tree(), ModelSQL, ModelView):
     image = fields.Many2One('ir.attachment', 'Image',
         domain=[
             ('resource.id', '=', Eval('id'), 'galatea.cms.menu')
-            ])
+            ], depends = ['id'])
 
     @classmethod
     def __setup__(cls):
