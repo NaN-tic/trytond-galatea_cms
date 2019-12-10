@@ -207,8 +207,7 @@ class Article(GalateaVisiblePage):
 
     @classmethod
     def __register__(cls, module_name):
-        TableHandler = backend.get('TableHandler')
-        table = TableHandler(cls, module_name)
+        table = backend.TableHandler(cls, module_name)
 
         super(Article, cls).__register__(module_name)
 
