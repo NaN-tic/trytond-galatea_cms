@@ -105,6 +105,7 @@ class Menu(tree(), ModelSQL, ModelView):
         domain=[
             ('resource.id', '=', Eval('id'), 'galatea.cms.menu')
             ], depends = ['id'])
+    description = fields.Text('Description', translate=True)
 
     @classmethod
     def __setup__(cls):
