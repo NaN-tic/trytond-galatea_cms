@@ -28,6 +28,14 @@ _BLOCK_TYPES = [
     ('remote_image', 'Remote Image'),
     ('custom_code', 'Custom Code'),
     ('section_description', 'Section Description'),
+    ('image_bkg', 'Image Background'),
+    ('section_description_black', 'Section Description Black'),
+    ('css_bkg', 'CSS Background'),
+    ('section_home_background', 'Section Home Background'),
+    ('image_top_bkg', 'Image Top Background'),
+    ('section_description_blue', 'Section Description Blue'),
+    ('section_description_icon', 'Section Description Icon'),
+    ('section_title', 'Section Title'),
     ]
 _BLOCK_COVER_IMAGE_DOMAIN = [
     ('resource', '=', Eval('attachment_resource')),
