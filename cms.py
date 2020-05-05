@@ -260,8 +260,11 @@ class Article(GalateaVisiblePage):
 
     @classmethod
     def delete(cls, articles):
-        raise DeleteWarning('delete_articles',
-            gettext('galatea_cms.msg_delete_articles'))
+        Warning = Pool().get('res.user.warning')
+        key = 'delete_articles'
+        if Warning.check(key):
+            raise DeleteWarning(key,
+                gettext('galatea_cms.msg_delete_articles'))
         super(Article, cls).delete(articles)
 
     @property
