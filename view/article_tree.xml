@@ -7,4 +7,5 @@ this repository contains the full copyright notices and license terms. -->
     <field name="template"/>
     <field name="visibility"/>
     <field name="active" tree_invisible="1"/>
+    <field name="description" tree_invisible="1"/>
 </tree>
