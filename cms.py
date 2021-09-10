@@ -1,7 +1,7 @@
 # This file is part galatea_cms module for Tryton.
 # The COPYRIGHT file at the top level of this repository contains
 # the full copyright notices and license terms.
-from trytond.model import ModelSQL, ModelView, fields, tree
+from trytond.model import ModelSQL, ModelView, DeactivableMixin, fields, tree
 from trytond.pool import Pool
 from trytond.pyson import Bool, Equal, Eval, In, Not
 from trytond import backend
@@ -50,7 +50,7 @@ _BLOCK_COVER_IMAGE_DEPENDS = ['attachment_resource']
 _BLOCK_TITLE_REQUIRED = ['section_description']
 
 
-class Menu(tree(), ModelSQL, ModelView):
+class Menu(tree(), DeactivableMixin, ModelSQL, ModelView):
     "Menu CMS"
     __name__ = 'galatea.cms.menu'
     _rec_name = 'name_used'
@@ -93,7 +93,6 @@ class Menu(tree(), ModelSQL, ModelView):
     sequence = fields.Integer('Sequence')
     nofollow = fields.Boolean('Nofollow',
         help='Add attribute in links to not search engines continue')
-    active = fields.Boolean('Active', select=True)
     # TODO: I think the following fields should go to another module
     css = fields.Char('CSS',
         help='Class CSS in menu.')
@@ -160,10 +159,6 @@ class Menu(tree(), ModelSQL, ModelView):
     @staticmethod
     def default_sequence():
         return 1
-
-    @staticmethod
-    def default_active():
-        return True
 
     @classmethod
     def copy(cls, menus, default=None):
@@ -310,7 +305,7 @@ class ArticleWebsite(ModelSQL):
         ondelete='RESTRICT', select=True, required=True)
 
 
-class Block(ModelSQL, ModelView):
+class Block(DeactivableMixin, ModelSQL, ModelView):
     "Block CMS"
     __name__ = 'galatea.cms.block'
     name = fields.Char('Name', required=True)
@@ -346,7 +341,6 @@ class Block(ModelSQL, ModelView):
         states={
             'invisible': Not(In(Eval('type'), ['image', 'remote_image']))
             })
-    active = fields.Boolean('Active', select=True)
     attachments = fields.One2Many('ir.attachment', 'resource', 'Attachments')
     visibility = fields.Selection([
             ('public', 'Public'),
@@ -409,10 +403,6 @@ class Block(ModelSQL, ModelView):
         'on_change_with_total_cover_images')
 
     @staticmethod
-    def default_active():
-        return True
-
-    @staticmethod
     def default_type():
         return 'custom_code'
 
@@ -451,18 +441,13 @@ class Block(ModelSQL, ModelView):
         return 'galatea.cms.block,-1'
 
 
-class Carousel(ModelSQL, ModelView):
+class Carousel(DeactivableMixin, ModelSQL, ModelView):
     "Carousel CMS"
     __name__ = 'galatea.cms.carousel'
     name = fields.Char('Name', translate=True, required=True)
     code = fields.Char('Code', required=True,
         help='Internal code. Use characters az09')
-    active = fields.Boolean('Active', select=True)
     items = fields.One2Many('galatea.cms.carousel.item', 'carousel', 'Items')
-
-    @staticmethod
-    def default_active():
-        return True
 
     @fields.depends('name', 'code')
     def on_change_name(self):
@@ -470,7 +455,7 @@ class Carousel(ModelSQL, ModelView):
             self.code = slugify(self.name)
 
 
-class CarouselItem(ModelSQL, ModelView):
+class CarouselItem(DeactivableMixin, ModelSQL, ModelView):
     "Carousel Item CMS"
     __name__ = 'galatea.cms.carousel.item'
     carousel = fields.Many2One(
@@ -486,12 +471,7 @@ class CarouselItem(ModelSQL, ModelView):
         help='In cas text carousel, description text')
     html = fields.Text('HTML', translate=True,
         help='HTML formated item - Content carousel-inner')
-    active = fields.Boolean('Active', select=True)
     sequence = fields.Integer('Sequence')
-
-    @staticmethod
-    def default_active():
-        return True
 
     @staticmethod
     def default_sequence():
