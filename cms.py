@@ -110,7 +110,7 @@ class Menu(tree(), DeactivableMixin, ModelSQL, ModelView):
         help='Hidden Large devices')
     image = fields.Many2One('ir.attachment', 'Image',
         domain=[
-            ('resource.id', '=', Eval('id'), 'galatea.cms.menu')
+            ('resource.id', '=', Eval('id', -1), 'galatea.cms.menu')
             ], depends = ['id'])
     description = fields.Text('Description', translate=True)
 
