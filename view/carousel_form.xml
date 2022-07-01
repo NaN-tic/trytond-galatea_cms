@@ -8,6 +8,8 @@ this repository contains the full copyright notices and license terms. -->
     <field name="code"/>
     <label name="active"/>
     <field name="active"/>
+    <label name="type"/>
+    <field name="type"/>
     <field name="items" colspan="4"
         view_ids="galatea_cms.cms_carousel_item_view_tree"/>
 </form>
