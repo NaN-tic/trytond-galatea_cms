@@ -53,9 +53,7 @@ _BLOCK_TITLE_REQUIRED = ['section_description']
 class Menu(tree(), DeactivableMixin, ModelSQL, ModelView):
     "Menu CMS"
     __name__ = 'galatea.cms.menu'
-    _rec_name = 'name_used'
-    _order = [('parent', 'ASC'), ('sequence', 'ASC'), ('id', 'ASC')]
-
+    # _rec_name = 'name_used'
     website = fields.Many2One('galatea.website', 'Website',
         ondelete='RESTRICT', select=True, required=True)
     name = fields.Char('Name', translate=True, states={
@@ -117,13 +115,20 @@ class Menu(tree(), DeactivableMixin, ModelSQL, ModelView):
     @classmethod
     def __setup__(cls):
         super(Menu, cls).__setup__()
-        cls._order.insert(0, ('sequence', 'ASC'))
-        cls._order.insert(1, ('id', 'ASC'))
+        cls._order = [
+            ('sequence', 'ASC'),
+            ('id', 'ASC'),
+            ]
 
     @fields.depends('name_uri', 'target_uri', 'name')
     def on_change_with_name(self, name=None):
         return (self.target_uri.name if self.name_uri and self.target_uri
             else self.name)
+
+    def get_rec_name(self, name):
+        if self.name_used:
+            return self.name_used
+        return '(%s)' % self.id
 
     @classmethod
     def search_name_used(cls, name, clause):
@@ -480,5 +485,7 @@ class CarouselItem(DeactivableMixin, ModelSQL, ModelView):
     @classmethod
     def __setup__(cls):
         super(CarouselItem, cls).__setup__()
-        cls._order.insert(0, ('sequence', 'ASC'))
-        cls._order.insert(1, ('id', 'ASC'))
+        cls._order = [
+            ('sequence', 'ASC'),
+            ('id', 'ASC'),
+            ]
