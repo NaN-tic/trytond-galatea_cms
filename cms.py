@@ -55,7 +55,7 @@ class Menu(tree(), DeactivableMixin, ModelSQL, ModelView):
     __name__ = 'galatea.cms.menu'
     # _rec_name = 'name_used'
     website = fields.Many2One('galatea.website', 'Website',
-        ondelete='RESTRICT', select=True, required=True)
+        ondelete='RESTRICT', required=True)
     name = fields.Char('Name', translate=True, states={
             'readonly': Eval('name_uri', False),
             }, depends=['name_uri'])
@@ -84,9 +84,9 @@ class Menu(tree(), DeactivableMixin, ModelSQL, ModelView):
         'get_url')
     parent = fields.Many2One('galatea.cms.menu', 'Parent', domain=[
             ('website', '=', Eval('website')),
-            ], depends=['website'], select=True)
-    left = fields.Integer('Left', required=True, select=True)
-    right = fields.Integer('Right', required=True, select=True)
+            ], depends=['website'])
+    left = fields.Integer('Left', required=True)
+    right = fields.Integer('Right', required=True)
     childs = fields.One2Many('galatea.cms.menu', 'parent', 'Children')
     sequence = fields.Integer('Sequence')
     nofollow = fields.Boolean('Nofollow',
@@ -305,9 +305,9 @@ class ArticleWebsite(ModelSQL):
     'Galatea CMS Article - Website'
     __name__ = 'galatea.cms.article-galatea.website'
     article = fields.Many2One('galatea.cms.article', 'Article',
-        ondelete='CASCADE', select=True, required=True)
+        ondelete='CASCADE', required=True)
     website = fields.Many2One('galatea.website', 'Website',
-        ondelete='RESTRICT', select=True, required=True)
+        ondelete='RESTRICT', required=True)
 
 
 class Block(DeactivableMixin, ModelSQL, ModelView):
