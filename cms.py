@@ -58,11 +58,11 @@ class Menu(tree(), DeactivableMixin, ModelSQL, ModelView):
         ondelete='RESTRICT', required=True)
     name = fields.Char('Name', translate=True, states={
             'readonly': Eval('name_uri', False),
-            }, depends=['name_uri'])
+            })
     name_uri = fields.Boolean('Use URI\'s name', states={
             'invisible': ((Eval('target_type', '') != 'internal_uri')
                 | ~Bool(Eval('target_uri'))),
-            }, depends=['target_type', 'target_uri'])
+            })
     name_used = fields.Function(fields.Char('Name', translate=True,
             required=True),
         'on_change_with_name', searcher='search_name_used')
@@ -76,15 +76,15 @@ class Menu(tree(), DeactivableMixin, ModelSQL, ModelView):
             'invisible': Eval('target_type', '') != 'internal_uri',
             }, domain=[
             ('website', '=', Eval('website')),
-            ], depends=['target_uri', 'website'])
+            ])
     target_url = fields.Char('Target URL', states={
             'invisible': Eval('target_type', '') != 'external_url',
-            }, depends=['target_type'])
+            })
     url = fields.Function(fields.Char('URL'),
         'get_url')
     parent = fields.Many2One('galatea.cms.menu', 'Parent', domain=[
             ('website', '=', Eval('website')),
-            ], depends=['website'])
+            ])
     left = fields.Integer('Left', required=True)
     right = fields.Integer('Right', required=True)
     childs = fields.One2Many('galatea.cms.menu', 'parent', 'Children')
@@ -357,7 +357,7 @@ class Block(DeactivableMixin, ModelSQL, ModelView):
     title = fields.Char('Title', translate=True,
         states={
             'required': Eval('type').in_(_BLOCK_TITLE_REQUIRED),
-            }, depends=['type'])
+            })
     title_headings = fields.Selection(_TITLE_STYLE, 'Title Headings')
     show_title = fields.Boolean('Show Title')
     paragraph1 = fields.Text('Paragraph 1', translate=True)
