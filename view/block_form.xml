@@ -22,6 +22,8 @@ this repository contains the full copyright notices and license terms. -->
             <field name="height"/>
             <label name="width"/>
             <field name="width"/>
+            <label name="carousel"/>
+            <field name="carousel"/>
             <separator name="custom_code" colspan="4"/>
             <field name="custom_code" colspan="4"/>
             <label name="title"/>
