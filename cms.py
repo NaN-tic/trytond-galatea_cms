@@ -36,6 +36,7 @@ _BLOCK_TYPES = [
     ('section_description_blue', 'Section Description Blue'),
     ('section_description_icon', 'Section Description Icon'),
     ('section_title', 'Section Title'),
+    ('carousel', 'Carousel'),
     ]
 _BLOCK_COVER_IMAGE_DOMAIN = [
     ('resource', '=', Eval('attachment_resource')),
@@ -406,6 +407,11 @@ class Block(DeactivableMixin, ModelSQL, ModelView):
             ], 'Cover Image Align')
     total_cover_images = fields.Function(fields.Integer('Total Cover Images'),
         'on_change_with_total_cover_images')
+    carousel = fields.Many2One('galatea.cms.carousel', "Carousel",
+        states={
+            'required': Eval('type') == 'carousel',
+            'invisible': Eval('type') != 'carousel',
+        }, depends=['type'])
 
     @staticmethod
     def default_type():
@@ -453,6 +459,13 @@ class Carousel(DeactivableMixin, ModelSQL, ModelView):
     code = fields.Char('Code', required=True,
         help='Internal code. Use characters az09')
     items = fields.One2Many('galatea.cms.carousel.item', 'carousel', 'Items')
+    type = fields.Selection([
+        ('base', 'Base'),
+        ], 'Base')
+
+    @staticmethod
+    def default_type():
+        return 'base'
 
     @fields.depends('name', 'code')
     def on_change_name(self):
