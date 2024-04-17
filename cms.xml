@@ -189,7 +189,7 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
 
         <!-- Access -->
         <record model="ir.model.access" id="access_galatea_cms_menu_cms">
-            <field name="model" search="[('model', '=', 'galatea.cms.menu')]"/>
+            <field name="model">galatea.cms.menu</field>
             <field name="group" ref="group_galatea_cms"/>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="True"/>
@@ -197,7 +197,7 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
             <field name="perm_delete" eval="True"/>
         </record>
         <record model="ir.model.access" id="access_galatea_cms_menu_galatea">
-            <field name="model" search="[('model', '=', 'galatea.cms.menu')]"/>
+            <field name="model">galatea.cms.menu</field>
             <field name="group" ref="galatea.group_galatea"/>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="False"/>
@@ -205,7 +205,7 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
             <field name="perm_delete" eval="False"/>
         </record>
         <record model="ir.model.access" id="access_galatea_cms_menu">
-            <field name="model" search="[('model', '=', 'galatea.cms.menu')]"/>
+            <field name="model">galatea.cms.menu</field>
             <field name="perm_read" eval="False"/>
             <field name="perm_write" eval="False"/>
             <field name="perm_create" eval="False"/>
@@ -213,7 +213,7 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
         </record>
 
         <record model="ir.model.access" id="access_galatea_cms_article_cms">
-            <field name="model" search="[('model', '=', 'galatea.cms.article')]"/>
+            <field name="model">galatea.cms.article</field>
             <field name="group" ref="group_galatea_cms"/>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="True"/>
@@ -221,7 +221,7 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
             <field name="perm_delete" eval="True"/>
         </record>
         <record model="ir.model.access" id="access_galatea_cms_article_galatea">
-            <field name="model" search="[('model', '=', 'galatea.cms.article')]"/>
+            <field name="model">galatea.cms.article</field>
             <field name="group" ref="galatea.group_galatea"/>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="False"/>
@@ -229,7 +229,7 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
             <field name="perm_delete" eval="False"/>
         </record>
         <record model="ir.model.access" id="access_galatea_cms_article">
-            <field name="model" search="[('model', '=', 'galatea.cms.article')]"/>
+            <field name="model">galatea.cms.article</field>
             <field name="perm_read" eval="False"/>
             <field name="perm_write" eval="False"/>
             <field name="perm_create" eval="False"/>
@@ -237,7 +237,7 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
         </record>
 
         <record model="ir.model.access" id="access_galatea_cms_block_cms">
-            <field name="model" search="[('model', '=', 'galatea.cms.block')]"/>
+            <field name="model">galatea.cms.block</field>
             <field name="group" ref="group_galatea_cms"/>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="True"/>
@@ -245,7 +245,7 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
             <field name="perm_delete" eval="True"/>
         </record>
         <record model="ir.model.access" id="access_galatea_cms_block_galatea">
-            <field name="model" search="[('model', '=', 'galatea.cms.block')]"/>
+            <field name="model">galatea.cms.block</field>
             <field name="group" ref="galatea.group_galatea"/>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="False"/>
@@ -253,7 +253,7 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
             <field name="perm_delete" eval="False"/>
         </record>
         <record model="ir.model.access" id="access_galatea_cms_block">
-            <field name="model" search="[('model', '=', 'galatea.cms.block')]"/>
+            <field name="model">galatea.cms.block</field>
             <field name="perm_read" eval="False"/>
             <field name="perm_write" eval="False"/>
             <field name="perm_create" eval="False"/>
@@ -261,7 +261,7 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
         </record>
 
         <record model="ir.model.access" id="access_galatea_cms_carousel_cms">
-            <field name="model" search="[('model', '=', 'galatea.cms.carousel')]"/>
+            <field name="model">galatea.cms.carousel</field>
             <field name="group" ref="group_galatea_cms"/>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="True"/>
@@ -269,7 +269,7 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
             <field name="perm_delete" eval="True"/>
         </record>
         <record model="ir.model.access" id="access_galatea_cms_carousel_galatea">
-            <field name="model" search="[('model', '=', 'galatea.cms.carousel')]"/>
+            <field name="model">galatea.cms.carousel</field>
             <field name="group" ref="galatea.group_galatea"/>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="False"/>
@@ -277,7 +277,7 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
             <field name="perm_delete" eval="False"/>
         </record>
         <record model="ir.model.access" id="access_galatea_cms_carousel">
-            <field name="model" search="[('model', '=', 'galatea.cms.carousel')]"/>
+            <field name="model">galatea.cms.carousel</field>
             <field name="perm_read" eval="False"/>
             <field name="perm_write" eval="False"/>
             <field name="perm_create" eval="False"/>
@@ -285,7 +285,7 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
         </record>
 
         <record model="ir.model.access" id="access_galatea_cms_carousel_item_cms">
-            <field name="model" search="[('model', '=', 'galatea.cms.carousel.item')]"/>
+            <field name="model">galatea.cms.carousel.item</field>
             <field name="group" ref="group_galatea_cms"/>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="True"/>
@@ -293,7 +293,7 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
             <field name="perm_delete" eval="True"/>
         </record>
         <record model="ir.model.access" id="access_galatea_galatea_cms_carousel_item_galatea">
-            <field name="model" search="[('model', '=', 'galatea.cms.carousel.item')]"/>
+            <field name="model">galatea.cms.carousel.item</field>
             <field name="group" ref="galatea.group_galatea"/>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="False"/>
@@ -301,7 +301,7 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
             <field name="perm_delete" eval="False"/>
         </record>
         <record model="ir.model.access" id="access_galatea_cms_carousel_item">
-            <field name="model" search="[('model', '=', 'galatea.cms.carousel.item')]"/>
+            <field name="model">galatea.cms.carousel.item</field>
             <field name="perm_read" eval="False"/>
             <field name="perm_write" eval="False"/>
             <field name="perm_create" eval="False"/>
