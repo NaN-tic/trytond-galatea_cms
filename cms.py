@@ -65,7 +65,7 @@ class Menu(tree(), DeactivableMixin, ModelSQL, ModelView):
             })
     name_used = fields.Function(fields.Char('Name', translate=True,
             required=True),
-        'on_change_with_name', searcher='search_name_used')
+        'on_change_with_name_used', searcher='search_name_used')
     code = fields.Char('Code', required=True,
         help='Internal code.')
     target_type = fields.Selection([
@@ -121,7 +121,7 @@ class Menu(tree(), DeactivableMixin, ModelSQL, ModelView):
             ]
 
     @fields.depends('name_uri', 'target_uri', 'name')
-    def on_change_with_name(self, name=None):
+    def on_change_with_name_used(self, name=None):
         return (self.target_uri.name if self.name_uri and self.target_uri
             else self.name)
 
@@ -210,7 +210,7 @@ class Article(GalateaVisiblePage):
     def __setup__(cls):
         super(Article, cls).__setup__()
 
-        domain_clause = ('allowed_models.model', 'in', ['galatea.cms.article'])
+        domain_clause = ('allowed_models.name', 'in', ['galatea.cms.article'])
         if domain_clause not in cls.template.domain:
             cls.template.domain.append(domain_clause)
 
