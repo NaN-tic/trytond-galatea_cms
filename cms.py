@@ -7,12 +7,9 @@ from trytond.pyson import Bool, Equal, Eval, In, Not
 from trytond import backend
 from trytond.i18n import gettext
 from trytond.modules.galatea.resource import GalateaVisiblePage
-from trytond.modules.galatea.tools import slugify
+from trytond.modules.voyager import slugify
 from trytond.transaction import Transaction
 from .exceptions import DeleteWarning
-
-__all__ = ['Menu', 'Article', 'ArticleBlock', 'ArticleWebsite', 'Block',
-    'Carousel', 'CarouselItem']
 
 _TITLE_STYLE = [
     (None, ''),
