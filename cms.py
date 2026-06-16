@@ -4,7 +4,6 @@
 from trytond.model import ModelSQL, ModelView, DeactivableMixin, fields, tree
 from trytond.pool import Pool
 from trytond.pyson import Bool, Equal, Eval, In, Not
-from trytond import backend
 from trytond.i18n import gettext
 from trytond.modules.galatea.resource import GalateaVisiblePage
 from trytond.modules.voyager import slugify
@@ -213,7 +212,7 @@ class Article(GalateaVisiblePage):
 
     @classmethod
     def __register__(cls, module_name):
-        table = backend.TableHandler(cls, module_name)
+        table = cls.__table_handler__(module_name)
 
         super(Article, cls).__register__(module_name)
 
